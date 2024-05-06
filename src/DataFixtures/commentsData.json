@@ -1,0 +1,50 @@
+[
+  {
+    "author_id": 1,
+    "trick_id": 1,
+    "content": "Superbe trick, j'ai adoré faire ce 360 !",
+    "created_at": "2024-05-06 10:00:00"
+  },
+  {
+    "author_id": 2,
+    "trick_id": 10,
+    "content": "Vraiment impressionnant, tu maîtrises bien ton style !",
+    "created_at": "2024-05-06 10:05:00"
+  },
+  {
+    "author_id": 3,
+    "trick_id": 3,
+    "content": "Le backflip est tellement cool, je veux le maîtriser aussi !",
+    "created_at": "2024-05-06 10:10:00"
+  },
+  {
+    "author_id": 4,
+    "trick_id": 4,
+    "content": "Bravo pour le frontflip, ça demande du courage !",
+    "created_at": "2024-05-06 10:15:00"
+  },
+  {
+    "author_id": 5,
+    "trick_id": 5,
+    "content": "Je me demande comment tu fais pour attraper la planche comme ça en plein vol !",
+    "created_at": "2024-05-06 10:20:00"
+  },
+  {
+    "author_id": 6,
+    "trick_id": 6,
+    "content": "Le method grab est l'un de mes tricks préférés, bien joué !",
+    "created_at": "2024-05-06 10:25:00"
+  },
+  {
+    "author_id": 7,
+    "trick_id": 7,
+    "content": "Les slides sont toujours impressionnants à regarder, continue comme ça !",
+    "created_at": "2024-05-06 10:30:00"
+  },
+  {
+    "author_id": 8,
+    "trick_id": 8,
+    "content": "J'aimerais bien maîtriser le lipslide, tu as des conseils ?",
+    "created_at": "2024-05-06 10:35:00"
+  }
+]
