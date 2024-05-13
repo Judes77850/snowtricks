@@ -2,13 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\UsersRepository;
+use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-#[ORM\Entity(repositoryClass: UsersRepository::class)]
-class Users
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -24,7 +26,10 @@ class Users
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
-    #[ORM\Column(length: 255)]
+	#[ORM\Column(length: 255, unique: true, nullable: true)]
+	private ?string $token = null;
+
+	#[ORM\Column(length: 255)]
     private ?string $userName = null;
 
     #[ORM\OneToMany(targetEntity: Media::class, mappedBy: 'userId')]
@@ -41,6 +46,8 @@ class Users
         $this->media = new ArrayCollection();
         $this->tricks = new ArrayCollection();
         $this->comments = new ArrayCollection();
+	    $this->roles = ['ROLE_USER'];
+	    $this->token = bin2hex(random_bytes(32));
     }
 
     public function getId(): ?int
@@ -185,4 +192,31 @@ class Users
 
         return $this;
     }
+
+	public function getToken(): ?string
+	{
+		return $this->token;
+	}
+
+	public function setToken(?string $token): static
+	{
+		$this->token = $token;
+
+		return $this;
+	}
+
+	public function getRoles(): array
+	{
+		// TODO: Implement getRoles() method.
+	}
+
+	public function eraseCredentials()
+	{
+		// TODO: Implement eraseCredentials() method.
+	}
+
+	public function getUserIdentifier(): string
+	{
+		// TODO: Implement getUserIdentifier() method.
+	}
 }

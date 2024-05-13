@@ -1,0 +1,98 @@
+[
+  {
+    "category_id": 1,
+    "author_id": 1,
+    "name": "Trois Sixty",
+    "description": "Une rotation de 360 degrés dans les airs.",
+    "slug": "trois-sixty",
+    "created_at": "2024-05-06 10:00:00"
+  },
+  {
+    "category_id": 1,
+    "author_id": 2,
+    "name": "Sept Vingt",
+    "description": "Une rotation de 720 degrés dans les airs.",
+    "slug": "sept-vingt",
+    "created_at": "2024-05-06 10:05:00"
+  },
+  {
+    "category_id": 2,
+    "author_id": 3,
+    "name": "Backflip",
+    "description": "Une rotation vers l'arrière dans les airs.",
+    "slug": "backflip",
+    "created_at": "2024-05-06 10:10:00"
+  },
+  {
+    "category_id": 2,
+    "author_id": 4,
+    "name": "Frontflip",
+    "description": "Une rotation vers l'avant dans les airs.",
+    "slug": "frontflip",
+    "created_at": "2024-05-06 10:15:00"
+  },
+  {
+    "category_id": 3,
+    "author_id": 5,
+    "name": "Indy Grab",
+    "description": "Attraper le bord de la planche avec la main arrière tout en étant dans les airs.",
+    "slug": "indy-grab",
+    "created_at": "2024-05-06 10:20:00"
+  },
+  {
+    "category_id": 3,
+    "author_id": 6,
+    "name": "Method Grab",
+    "description": "Attraper le bord de la planche avec la main arrière tout en pliant le genou avant.",
+    "slug": "method-grab",
+    "created_at": "2024-05-06 10:25:00"
+  },
+  {
+    "category_id": 4,
+    "author_id": 7,
+    "name": "Boardslide",
+    "description": "Glisser le long d'une barre ou d'une boîte avec la planche de snowboard perpendiculaire à l'élément.",
+    "slug": "boardslide",
+    "created_at": "2024-05-06 10:30:00"
+  },
+  {
+    "category_id": 4,
+    "author_id": 8,
+    "name": "Lipslide",
+    "description": "Glisser le long d'une barre ou d'une boîte avec la planche de snowboard parallèle à l'élément.",
+    "slug": "lipslide",
+    "created_at": "2024-05-06 10:35:00"
+  },
+  {
+    "category_id": 5,
+    "author_id": 9,
+    "name": "Tail Butter",
+    "description": "Presser la queue du snowboard dans la neige tout en tournant.",
+    "slug": "tail-butter",
+    "created_at": "2024-05-06 10:40:00"
+  },
+  {
+    "category_id": 5,
+    "author_id": 10,
+    "name": "Nose Butter",
+    "description": "Presser le nez du snowboard dans la neige tout en tournant.",
+    "slug": "nose-butter",
+    "created_at": "2024-05-06 10:45:00"
+  },
+  {
+    "category_id": 6,
+    "author_id": 11,
+    "name": "Double Cork",
+    "description": "Deux rotations horizontales et deux rotations complètes.",
+    "slug": "double-cork",
+    "created_at": "2024-05-06 10:50:00"
+  },
+  {
+    "category_id": 6,
+    "author_id": 12,
+    "name": "Combo 540",
+    "description": "Une rotation de 540 degrés combinée avec un autre trick.",
+    "slug": "combo-540",
+    "created_at": "2024-05-06 10:55:00"
+  }
+]

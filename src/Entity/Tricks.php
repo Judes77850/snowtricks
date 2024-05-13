@@ -34,7 +34,7 @@ class Tricks
 
     #[ORM\ManyToOne(inversedBy: 'tricks')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Users $authorId = null;
+    private ?User $authorId = null;
 
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'trickId')]
     private Collection $comments;
@@ -109,12 +109,12 @@ class Tricks
         return $this;
     }
 
-    public function getAuthorId(): ?Users
+    public function getAuthorId(): ?User
     {
         return $this->authorId;
     }
 
-    public function setAuthorId(?Users $authorId): static
+    public function setAuthorId(?User $authorId): static
     {
         $this->authorId = $authorId;
 
@@ -142,7 +142,6 @@ class Tricks
     public function removeComment(Comment $comment): static
     {
         if ($this->comments->removeElement($comment)) {
-            // set the owning side to null (unless already changed)
             if ($comment->getTrickId() === $this) {
                 $comment->setTrickId(null);
             }

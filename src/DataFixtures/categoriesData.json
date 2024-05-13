@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Rotations",
+    "slug": "rotations"
+  },
+  {
+    "name": "Inversions",
+    "slug": "inversions"
+  },
+  {
+    "name": "Grabs",
+    "slug": "grabs"
+  },
+  {
+    "name": "Slides",
+    "slug": "slides"
+  },
+  {
+    "name": "Butters",
+    "slug": "butters"
+  },
+  {
+    "name": "Combinaisons",
+    "slug": "combinaisons"
+  }
+]

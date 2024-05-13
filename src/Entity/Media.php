@@ -23,9 +23,9 @@ class Media
     private ?Tricks $trickId = null;
 
     #[ORM\ManyToOne(inversedBy: 'media')]
-    private ?Users $userId = null;
+    private ?User $userId = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
     private ?Categories $categoryId = null;
 
     public function getId(): ?int
@@ -69,12 +69,12 @@ class Media
         return $this;
     }
 
-    public function getUserId(): ?Users
+    public function getUserId(): ?User
     {
         return $this->userId;
     }
 
-    public function setUserId(?Users $userId): static
+    public function setUserId(?User $userId): static
     {
         $this->userId = $userId;
 
