@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use PhpParser\Node\Expr\Cast\Bool_;
 
 /**
  * @extends ServiceEntityRepository<User>
@@ -20,6 +21,22 @@ class UserRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, User::class);
     }
+
+	public function save(User $entity, bool $flush = false)
+	{
+		$this->getEntityManager()->persist($entity);
+		if ($flush) {
+			$this->getEntityManager()->flush();
+		}
+	}
+
+	public function remove(User $entity, bool $flush = false)
+	{
+		$this->getEntityManager()->remove($entity);
+		if ($flush) {
+			$this->getEntityManager()->flush();
+		}
+	}
 
 //    /**
 //     * @return Users[] Returns an array of Users objects

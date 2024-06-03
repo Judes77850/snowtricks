@@ -1,7 +1,3 @@
 controllers:
     resource: ../src/Controller/
     type: attribute
-
-homepage:
-    path: /
-    controller: App\Controller\HomeController::index

@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block body %}
+    {% include 'header.twig' %}
+    <h1 class="pixelify-sans-font">Connexion</h1>
+
+    <div class="d-flex justify-content-center align-items-center">
+        {% if error %}
+            <div class="auth-form-errors">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+        <form method="post">
+            <label for="username">Nom d'utilisateur :</label>
+            <input type="text" id="username" name="_username" required><br><br>
+
+            <label for="password">Mot de passe :</label>
+            <input type="password" id="password" name="_password" required><br><br>
+
+            <div class="container mx-auto">
+                <button type="submit" class="pixel"><p>Se connecter</p></button>
+            </div>
+        </form>
+        <a href="/forgot-password">Mot de passe oublié</a>
+    </div>
+
+{% endblock %}
