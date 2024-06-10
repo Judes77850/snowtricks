@@ -17,12 +17,13 @@
         <nav class="col col-7">
             <ul class="col col-12 d-md-flex list-unstyled justify-content-between align-items-center mb-0 fs-5 pixelify-sans-font">
                 <li><a class="text-decoration-none text-black" href="/home">Accueil</a></li>
-                <li><a class="text-decoration-none text-black" href="../articles">Figures</a></li>
+                <li><a class="text-decoration-none text-black" href="../tricks">Tricks</a></li>
                 <li><a class="text-decoration-none text-black" href="../contact">Contact</a></li>
                 {% if userName is not defined %}
                     <li><a class="text-decoration-none text-black" href="../login">Connexion</a></li>
                     <li><a class="text-decoration-none text-black" href="../register">Inscription</a></li>
                 {% else %}
+                    <li><a class="text-decoration-none text-black" href="../trick/new">Ajouter un trick</a></li>
                     <li><a class="text-decoration-none text-black" href="../login">Hello {{ userName }}</a></li>
                     <li><a class="text-decoration-none text-muted small" href="{{ path('app_logout') }}">Tchao !</a></li>
                 {% endif %}

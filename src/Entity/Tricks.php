@@ -16,6 +16,9 @@ class Tricks
     #[ORM\Column]
     private ?int $id = null;
 
+	#[ORM\OneToMany(targetEntity: Media::class, mappedBy: 'trickId', cascade: ['persist'])]
+	private ?Collection $media = null;
+
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
@@ -36,18 +39,47 @@ class Tricks
     #[ORM\JoinColumn(nullable: false)]
     private ?User $authorId = null;
 
+
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'trickId')]
     private Collection $comments;
 
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+	    $this->media = new ArrayCollection();
+		$this->createdAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
     {
         return $this->id;
     }
+
+	public function getMedia(): Collection
+	{
+		return $this->media;
+	}
+
+	public function addMedia(Media $media): static
+	{
+		if (!$this->media->contains($media)) {
+			$this->media->add($media);
+			$media->setTrickId($this);
+		}
+
+		return $this;
+	}
+
+	public function removeMedia(Media $media): static
+	{
+		if ($this->media->removeElement($media)) {
+			if ($media->getTrickId() === $this) {
+				$media->setTrickId(null);
+			}
+		}
+
+		return $this;
+	}
 
     public function getName(): ?string
     {

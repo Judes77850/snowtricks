@@ -1,0 +1,30 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails du trick{{ ' - ' ~ trick.name }}{% endblock %}
+
+{% block body %}
+    {% include 'header.twig' %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <h1>{{ trick.name }}</h1>
+                <p>{{ trick.description }}</p>
+                <p><strong>Créé le :</strong> {{ trick.createdAt|date('d/m/Y H:i:s') }}</p>
+                <p><strong>Catégorie :</strong> {{ trick.categoryId.name }}</p>
+                <p><strong>Auteur :</strong> {{ trick.authorId.userName }}</p>
+
+                <h2>Commentaires :</h2>
+                {% if trick.comments|length > 0 %}
+                    <ul class="list-group">
+                        {% for comment in trick.comments %}
+                            <li class="list-group-item">{{ comment.content }} - Par {{ comment.authorId.userName }} le {{ comment.createdAt|date('d/m/Y H:i:s') }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>Aucun commentaire pour le moment.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

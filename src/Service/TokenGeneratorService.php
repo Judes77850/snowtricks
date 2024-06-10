@@ -2,12 +2,12 @@
 
 namespace App\Service;
 
+use Symfony\Component\Uid\Uuid;
+
 class TokenGeneratorService
 {
-	public function generateToken(): string
+	public function generateToken(): Uuid
 	{
-		$randomBytes = bin2hex(random_bytes(32));
-		$hashedToken = hash('sha256', $randomBytes);
-		return $hashedToken;
+		return Uuid::class::v4();
 	}
 }
