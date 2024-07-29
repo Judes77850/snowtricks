@@ -12102,9 +12102,18 @@ header {
   transform: rotate(-45deg);
 }
 
-.home-intro img {
-  width: 100%;
-  max-width: 300px;
+.home-intro {
+  background-image: url("../images/philipp-kammerer-BOMJAHOLhFk-unsplash.webp");
+  background-size: cover;
+  background-position-y: -750px;
+  height: 80vh;
+}
+@media (max-width: 768px) {
+  .home-intro {
+    background-position-y: 0px;
+    background-size: contain;
+    height: 100vh;
+  }
 }
 
 /*# sourceMappingURL=style.css.map */

@@ -51,6 +51,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	#[ORM\Column(type: 'json')]
 	private array $roles = [];
 
+	#[ORM\OneToOne(cascade: ['persist', 'remove'])]
+	private ?UserProfilePicture $profilePicture = null;
+
 	public function __construct()
 	{
 		$this->media = new ArrayCollection();
@@ -164,7 +167,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 			$this->tricks->add($trick);
 			$trick->setAuthorId($this);
 		}
-
 		return $this;
 	}
 
@@ -194,7 +196,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 			$this->comments->add($comment);
 			$comment->setAuthorId($this);
 		}
-
 		return $this;
 	}
 
@@ -206,14 +207,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 				$comment->setAuthorId(null);
 			}
 		}
-
 		return $this;
 	}
 
 	public function setRoles(?array $roles): static
 	{
 		$this->roles = $roles;
-
 		return $this;
 	}
 
@@ -242,7 +241,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	public function setIsVerified(bool $isVerified): static
 	{
 		$this->isVerified = $isVerified;
-
 		return $this;
 	}
 
@@ -254,8 +252,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	public function setToken(?Uuid $token): static
 	{
 		$this->token = $token;
+		return $this;
+	}
+
+	public function getProfilePicture(): ?UserProfilePicture
+	{
+		return $this->profilePicture;
+	}
+
+	public function setProfilePicture(?UserProfilePicture $profilePicture): static
+	{
+		if ($profilePicture) {
+			$profilePicture->setUser($this);
+		}
+
+		$this->profilePicture = $profilePicture;
 
 		return $this;
 	}
 }
-

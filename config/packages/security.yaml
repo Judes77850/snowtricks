@@ -23,11 +23,16 @@ security:
                 login_path: app_login
                 check_path: app_login
                 default_target_path: home # Redirection après la connexion réussie
+                username_parameter: _username  # Correspond aux champs de votre formulaire
+                password_parameter: _password
             logout:
                 path: app_logout
                 target: app_login
 
     access_control:
+        - { path: ^/account, roles: ROLE_USER }
+        - { path: ^/account/edit, roles: ROLE_USER }
+        - { path: ^/account/tricks, roles: ROLE_USER }
     # Définir les règles d'accès en fonction de vos besoins
     # Par exemple:
     # - { path: ^/admin, roles: ROLE_ADMIN }

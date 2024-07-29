@@ -2,7 +2,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Snowtricks</title>
-    <link href="../assets/scss/style.css" rel="stylesheet" type="text/css">
+    <link href="../../assets/scss/style.css" rel="stylesheet" type="text/css">
     <link href='https://fonts.googleapis.com/css?family=VT323' rel='stylesheet' type='text/css'>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap');
@@ -16,16 +16,17 @@
         </a>
         <nav class="col col-7">
             <ul class="col col-12 d-md-flex list-unstyled justify-content-between align-items-center mb-0 fs-5 pixelify-sans-font">
-                <li><a class="text-decoration-none text-black" href="/home">Accueil</a></li>
+                <li><a class="text-decoration-none text-black" href="/">Accueil</a></li>
                 <li><a class="text-decoration-none text-black" href="../tricks">Tricks</a></li>
-                <li><a class="text-decoration-none text-black" href="../contact">Contact</a></li>
-                {% if userName is not defined %}
+                {% if app.user is null %}
                     <li><a class="text-decoration-none text-black" href="../login">Connexion</a></li>
                     <li><a class="text-decoration-none text-black" href="../register">Inscription</a></li>
                 {% else %}
                     <li><a class="text-decoration-none text-black" href="../trick/new">Ajouter un trick</a></li>
-                    <li><a class="text-decoration-none text-black" href="../login">Hello {{ userName }}</a></li>
-                    <li><a class="text-decoration-none text-muted small" href="{{ path('app_logout') }}">Tchao !</a></li>
+                    <li><a class="text-decoration-none second-color"
+                           href="../../account">Hello {{ app.user.username }}</a></li>
+                    <li><a class="text-decoration-none text-muted small" href="{{ path('app_logout') }}">Tchao !</a>
+                    </li>
                 {% endif %}
             </ul>
         </nav>
@@ -44,9 +45,19 @@
 
                 <div class="menu-items first-color-bg mb-5 fs-1">
                     <li><a class="pixelify-sans-font text-decoration-none text-black" href="/">Accueil</a></li>
-                    <li><a class="pixelify-sans-font text-decoration-none text-black" href="../articles">Figures</a>
+                    <li><a class="pixelify-sans-font text-decoration-none text-black" href="../tricks">Tricks</a>
+                        {% if app.user is null %}
+                    <li><a class="pixelify-sans-font text-decoration-none text-black" href="../login">Connexion</a></li>
+                    <li><a class="pixelify-sans-font text-decoration-none text-black" href="../register">Inscription</a></li>
+                    {% else %}
+                        <li><a class="pixelify-sans-font text-decoration-none text-black" href="../trick/new">Ajouter un trick</a></li>
+                        <li><a class="pixelify-sans-font text-decoration-none second-color"
+                               href="../../account">Hello {{ app.user.username }}</a></li>
+                        <li><a class="pixelify-sans-font text-decoration-none text-black" href="{{ path('app_logout') }}">Tchao !</a>
+                        </li>
+                    {% endif %}
+
                     </li>
-                    <li><a class="pixelify-sans-font text-decoration-none text-black" href="../contact">Contact</a></li>
                 </div>
             </div>
             <div class="logo">

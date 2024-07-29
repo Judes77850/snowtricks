@@ -1,0 +1,45 @@
+{# templates/account/edit.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier le profil{% endblock %}
+
+{% block body %}
+    {% include 'header.twig' %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h1 class="mb-4">Modifier le profil</h1>
+
+                {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+
+                <div class="form-group">
+                    {{ form_label(form.email, 'Email', {'label_attr': {'class': 'control-label pixelify-sans-font mt-4 second-color'}}) }}
+                    {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.email) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.userName, "Nom d'utilisateur", {'label_attr': {'class': 'control-label pixelify-sans-font mt-4 second-color'}}) }}
+                    {{ form_widget(form.userName, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.userName) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.plainPassword.first, 'Nouveau mot de passe', {'label_attr': {'class': 'control-label pixelify-sans-font mt-4 second-color'}}) }}
+                    {{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.plainPassword.first) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.plainPassword.second, 'Confirmer le nouveau mot de passe', {'label_attr': {'class': 'control-label pixelify-sans-font mt-4 second-color'}}) }}
+                    {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.plainPassword.second) }}
+                </div>
+
+                <button type="submit" class="pixel mt-5"><p>Mettre à jour</p></button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

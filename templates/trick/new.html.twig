@@ -5,73 +5,11 @@
 {% block body %}
     {% include 'header.twig' %}
     <div class="container">
-        <div class="row">
-            <div class="col-md-8 offset-md-2">
-                <h1 class="text-center mb-4">Créer un nouveau trick</h1>
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h1 class="text-center mb-4">Créer un nouveau trick</h1>
+            {% include 'trick/_form.html.twig' %}
 
-                {{ form_start(form, {'attr': {'class': 'form'}}) }}
-
-                <div class="form-group">
-                    {{ form_label(form.name, 'Nom du trick', {'label_attr': {'class': 'form-label'}}) }}
-                    {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
-                </div>
-
-                <div class="form-group">
-                    {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label'}}) }}
-                    {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
-                </div>
-
-                <div class="form-group">
-                    {{ form_label(form.categoryId, 'Catégorie du trick', {'label_attr': {'class': 'form-label'}}) }}
-                    {{ form_widget(form.categoryId, {'attr': {'class': 'form-control'}}) }}
-                </div>
-                <div id="media-collection-holder"
-                     data-prototype="{{ form_widget(form.media.vars.prototype)|e('html_attr') }}"
-                     data-index="{{ form.media|length }}">
-                    {% for mediaForm in form.media %}
-                        <div class="media-item">
-                            {{ form_widget(mediaForm) }}
-                            <button type="button" class="btn btn-danger remove-media-button">Supprimer ce média</button>
-                        </div>
-                    {% endfor %}
-                </div>
-                <button type="button" class="add_media_link btn btn-info">Add a media</button>
-                <button type="submit" class="btn btn-primary btn-block mt-4">Créer Trick</button>
-
-                {{ form_end(form,  {render_rest: false}) }}
-            </div>
         </div>
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var collectionHolder = document.getElementById('media-collection-holder');
-            var addMediaButton = document.querySelector('.add_media_link');
-            var index = parseInt(collectionHolder.dataset.index, 10) || 0;
-
-            addMediaButton.addEventListener('click', function () {
-                addMediaForm(collectionHolder, index);
-                index++;
-            });
-
-            function addMediaForm(collectionHolder, index) {
-                var newForm = collectionHolder.dataset.prototype.replace(/__name__/g, index);
-                var newFormDiv = document.createElement('div');
-                newFormDiv.classList.add('media-item');
-                newFormDiv.innerHTML = newForm + '<button type="button" class="btn btn-danger remove-media-button">Supprimer ce média</button>';
-
-                var removeButton = newFormDiv.querySelector('.remove-media-button');
-                removeButton.addEventListener('click', function () {
-                    newFormDiv.remove();
-                });
-
-                collectionHolder.appendChild(newFormDiv);
-            }
-
-            document.querySelectorAll('.remove-media-button').forEach(function (button) {
-                button.addEventListener('click', function () {
-                    button.parentElement.remove();
-                });
-            });
-        });
-    </script>
 {% endblock %}

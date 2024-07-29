@@ -5,13 +5,42 @@
 {% block title %}Inscription{% endblock %}
 
 {% block body %}
-    <h1>Inscription</h1>
+    {% include 'header.twig' %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h1 class="mb-4">Inscription</h1>
 
-    {{ form_start(registrationForm) }}
-    {{ form_row(registrationForm.email) }}
-    {{ form_row(registrationForm.userName) }}
-    {{ form_row(registrationForm.password) }}
+                {{ form_start(registrationForm, {'attr': {'class': 'form-horizontal'}}) }}
 
-    <button type="submit">S'inscrire</button>
-    {{ form_end(registrationForm) }}
+                <div class="form-group">
+                    {{ form_label(registrationForm.email, 'Email', {'label_attr': {'class': 'control-label'}}) }}
+                    {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(registrationForm.email) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(registrationForm.userName, 'Nom d\'utilisateur', {'label_attr': {'class': 'control-label'}}) }}
+                    {{ form_widget(registrationForm.userName, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(registrationForm.userName) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(registrationForm.password.first, 'Mot de passe', {'label_attr': {'class': 'control-label'}}) }}
+                    {{ form_widget(registrationForm.password.first, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(registrationForm.password.first) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(registrationForm.password.second, 'Confirmer le mot de passe', {'label_attr': {'class': 'control-label'}}) }}
+                    {{ form_widget(registrationForm.password.second, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(registrationForm.password.second) }}
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block mt-5">S'inscrire</button>
+                {{ form_end(registrationForm) }}
+            </div>
+        </div>
+    </div>
 {% endblock %}
+

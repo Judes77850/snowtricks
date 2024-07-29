@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Tricks{% endblock %}
+
+{% block body %}
+    {% include 'header.twig' %}
+    <div class="container mt-4">
+        <div class="row mb-3">
+            <div class="col-md-6 mx-auto my-4">
+                <form action="{{ path('tricks_index') }}" method="GET">
+                    <div class="form-group">
+                        <label for="category"><span class="pixelify-sans-font fs-2">Filtrer par catégorie :</span></label>
+                        <select id="category" name="category" class="form-control mt-3" onchange="this.form.submit()">
+                            <option value="">Toutes les catégories</option>
+                            {% for category in categories %}
+                                <option value="{{ category.id }}" {% if category.id == selectedCategory %}selected{% endif %}>
+                                    {{ category.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="row">
+            {% if tricks is empty %}
+                <div class="col">
+                    <p class="text-center">Aucun trick à afficher pour le moment.</p>
+                </div>
+            {% else %}
+                {% for trick in tricks %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            {% if trick.images is not empty and trick.images is not empty %}
+                                <img src="{{ asset('uploads/media/' ~ trick.images.first.path) }}" class="card-img-top object-fit-cover h-50" alt="{{ trick.name }}">
+                            {% else %}
+                                <img src="assets/images/default-trick-image.jpg" class="card-img-top object-fit-cover h-50"
+                                     alt="Image par défaut">
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ trick.name }}</h5>
+                                <p class="card-text">{{ trick.description|slice(0, 100) ~ '...' }}</p>
+                            </div>
+                            <div class="card-footer d-flex justify-content-around">
+                                <a href="{{ path('trick_show', {'id': trick.id}) }}" class="pixel"><p>Voir le détail</p></a>
+                                {% if is_granted('IS_AUTHENTICATED_FULLY') and app.user == trick.authorId %}
+                                    <form action="{{ path('trick_delete', {'id': trick.id}) }}" method="post" class="mb-0">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ trick.id) }}">
+                                        <button type="submit" class="pixel second-color"><p>Supprimer</p></button>
+                                    </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

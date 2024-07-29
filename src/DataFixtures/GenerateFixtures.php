@@ -32,7 +32,6 @@ class GenerateFixtures extends Fixture
 
 	public function load(ObjectManager $manager)
 	{
-		// Chargement users depuis JSON
 		$usersData = json_decode(file_get_contents(__DIR__ . '/usersData.json'), true);
 		$users = [];
 		foreach ($usersData as $userData) {
@@ -42,7 +41,6 @@ class GenerateFixtures extends Fixture
 		}
 		$manager->flush();
 
-		// Chargement trick categories depuis JSON
 		$categoriesData = json_decode(file_get_contents(__DIR__ . '/categoriesData.json'), true);
 		$categories = [];
 		foreach ($categoriesData as $categoryData) {
@@ -52,7 +50,6 @@ class GenerateFixtures extends Fixture
 		}
 		$manager->flush();
 
-		// Chargement tricks depuis JSON
 		$tricksData = json_decode(file_get_contents(__DIR__ . '/tricksData.json'), true);
 		$tricks = [];
 		foreach ($tricksData as $trickData) {
@@ -62,7 +59,6 @@ class GenerateFixtures extends Fixture
 		}
 		$manager->flush();
 
-		// Chargement comments depuis JSON
 		$commentsData = json_decode(file_get_contents(__DIR__ . '/commentsData.json'), true);
 		foreach ($commentsData as $commentData) {
 			$comment = $this->createComment($commentData, $users, $tricks);
@@ -93,8 +89,6 @@ class GenerateFixtures extends Fixture
 			->setUserName($userData['user_name'])
 			->setToken($this->tokenGeneratorService->generateToken())
 			->setCreatedAt(new \DateTimeImmutable($userData['created_at']));
-
-
 		return $user;
 	}
 
@@ -103,7 +97,6 @@ class GenerateFixtures extends Fixture
 		$category = new Categories();
 		$category->setName($categoryData['name']);
 		$category->setSlug($categoryData['slug']);
-
 		return $category;
 	}
 
@@ -134,7 +127,7 @@ class GenerateFixtures extends Fixture
 	private function createMedia(array $tricks, array $users, array $categories, string $path, bool $isVideo): Media
 	{
 		$media = new Media();
-		$media->setTrickId($tricks[array_rand($tricks)])
+		$media->setTrick($tricks[array_rand($tricks)])
 			->setUserId($users[array_rand($users)])
 			->setCategoryId($categories[array_rand($categories)])
 			->setPath($path)
