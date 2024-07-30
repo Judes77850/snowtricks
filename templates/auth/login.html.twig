@@ -4,24 +4,26 @@
 
 {% block body %}
     {% include 'header.twig' %}
-    <h1 class="pixelify-sans-font">Connexion</h1>
+    <div class="d-flex flex-column justify-content-center align-items-center first-color-bg col col-10 mx-auto mt-5 rounded p-4">
+        <h1 class="pixelify-sans-font text-decoration-underline mb-5">Connexion</h1>
 
-    <div class="d-flex justify-content-center align-items-center">
-        {% if error %}
-            <div class="auth-form-errors">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
-        <form method="post">
-            <label for="username">Nom d'utilisateur :</label>
-            <input type="text" id="username" name="_username" required><br><br>
+        <div class="d-flex justify-content-center align-items-center">
+            {% if error %}
+                <div class="auth-form-errors">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+            <form method="post" class="d-flex flex-column justify-content-start">
+                <label for="username">Nom d'utilisateur :</label>
+                <input type="text" id="username" name="_username" required><br><br>
 
-            <label for="password">Mot de passe :</label>
-            <input type="password" id="password" name="_password" required><br><br>
+                <label for="password">Mot de passe :</label>
+                <input type="password" id="password" name="_password" required><br><br>
 
-            <div class="container mx-auto">
-                <button type="submit" class="pixel"><p>Se connecter</p></button>
-            </div>
-        </form>
-        <a href="/forgot-password">Mot de passe oublié</a>
+                <div class="container mx-auto">
+                    <button type="submit" class="pixel"><p>Se connecter</p></button>
+                </div>
+            </form>
+        </div>
+        <a class="pixelify-sans-font text-muted" href="/forgot-password">Mot de passe oublié</a>
     </div>
 
 {% endblock %}

@@ -1,0 +1,18 @@
+{# templates/trick/delete.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Supprimer le trick "{{ trick.name }}"{% endblock %}
+
+{% block body %}
+    <h1>Supprimer le trick "{{ trick.name }}"</h1>
+
+    <p>Êtes-vous sûr de vouloir supprimer ce trick ?</p>
+
+    <form method="post" action="{{ path('trick_delete', {'id': trick.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce trick ?')">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ trick.id) }}">
+        <button type="submit">Oui, Supprimer</button>
+    </form>
+
+    <a href="{{ path('account_tricks') }}">Annuler</a>
+{% endblock %}

@@ -1,0 +1,117 @@
+{{ form_start(form, {'attr': {'class': 'form'}}) }}
+                {{ form_widget(form._token) }}
+
+<div class="form-group">
+    {{ form_label(form.name, 'Nom du trick', {'label_attr': {'class': 'form-label'}}) }}
+    {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label'}}) }}
+    {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form.categoryId, 'Catégorie du trick', {'label_attr': {'class': 'form-label'}}) }}
+    {{ form_widget(form.categoryId, {'attr': {'class': 'form-control'}}) }}
+</div>
+
+<h2>Ajouter des Images</h2>
+<div id="image-collection-holder"
+     data-prototype="{{ include('trick/_image.html.twig', {form: form.images.vars.prototype})|e('html_attr') }}"
+     data-index="{{ form.images|length > 0 ? form.images|last.vars.name + 1 : 0 }}">
+    {% for imageForm in form.images %}
+        <div class="image-item">
+            {% if imageForm %}
+            <div>
+                <img src="{{ asset('uploads/media/') }}{{ imageForm.vars.data.path }}">
+            </div>
+            {% endif %}
+            {{ include('trick/_image.html.twig', {form: imageForm}) }}
+        </div>
+    {% endfor %}
+    {{ form_errors(form.images) }}
+    <button type="button" class="add_image_link pixel m-4"><p>Ajouter une image</p></button>
+</div>
+
+<h2>Ajouter des Vidéos</h2>
+<div id="video-collection-holder"
+     data-prototype="{{ form_widget(form.videos.vars.prototype)|e('html_attr') }}"
+     data-index="{{ form.videos|length }}">
+    {% for videoForm in form.videos %}
+        <div class="video-item">
+            {{ form_widget(videoForm.url, {'attr': {'class': 'form-control'}}) }}
+            <button type="button" class="btn btn-danger remove-video-button m-4">Supprimer cette vidéo
+            </button>
+        </div>
+    {% endfor %}
+    <button type="button" class="add_video_link pixel m-4"><p>Ajouter une video</p></button>
+</div>
+{{ form_errors(form) }}
+
+<button type="submit" class="pixel mt-4"><p>Enregistrer le Trick</p></button>
+
+{{ form_end(form) }}
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var imageCollectionHolder = document.getElementById('image-collection-holder');
+        var addImageButton = document.querySelector('.add_image_link');
+        var imageIndex = parseInt(imageCollectionHolder.dataset.index, 10) || 0;
+
+        addImageButton.addEventListener('click', function () {
+            addImageForm(imageCollectionHolder, imageIndex);
+            imageIndex++;
+        });
+
+        function addImageForm(imageCollectionHolder, imageIndex) {
+            var newForm = imageCollectionHolder.dataset.prototype.replace(/__name__/g, imageIndex);
+            var newFormDiv = document.createElement('div');
+            newFormDiv.classList.add('image-item');
+            newFormDiv.innerHTML = newForm + '<button type="button" class="btn btn-danger remove-image-button m-4">Supprimer cette image</button>';
+
+            var removeButton = newFormDiv.querySelector('.remove-image-button');
+            removeButton.addEventListener('click', function () {
+                newFormDiv.remove();
+            });
+
+            imageCollectionHolder.appendChild(newFormDiv);
+        }
+
+        var videoCollectionHolder = document.getElementById('video-collection-holder');
+        var addVideoButton = document.querySelector('.add_video_link');
+        var videoIndex = parseInt(videoCollectionHolder.dataset.index, 10) || 0;
+
+        addVideoButton.addEventListener('click', function () {
+            addVideoForm(videoCollectionHolder, videoIndex);
+            videoIndex++;
+        });
+
+        function addVideoForm(videoCollectionHolder, videoIndex) {
+            var newForm = videoCollectionHolder.dataset.prototype.replace(/__name__/g, videoIndex);
+            var newFormDiv = document.createElement('div');
+            newFormDiv.classList.add('video-item');
+            newFormDiv.innerHTML = newForm + '<button type="button" class="btn btn-danger remove-video-button m-4">Supprimer cette vidéo</button>';
+
+            var removeButton = newFormDiv.querySelector('.remove-video-button');
+            removeButton.addEventListener('click', function () {
+                newFormDiv.remove();
+            });
+
+            videoCollectionHolder.appendChild(newFormDiv);
+        }
+
+        document.querySelectorAll('.remove-image-button').forEach(function (button) {
+            button.addEventListener('click', function () {
+                button.parentElement.remove();
+            });
+        });
+
+        document.querySelectorAll('.remove-video-button').forEach(function (button) {
+            button.addEventListener('click', function () {
+                button.parentElement.remove();
+            });
+        });
+    });
+</script>

@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use mysql_xdevapi\Warning;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +17,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class SecurityController extends AbstractController
 {
-	#[Route('/login', name: 'app_login')]
+	#[Route('/login', name: 'app_login', methods: ['GET', 'POST'])]
 	public function login(AuthenticationUtils $authenticationUtils): Response
 	{
 		if ($this->getUser()) {
@@ -36,7 +35,7 @@ class SecurityController extends AbstractController
 		]);
 	}
 
-	#[Route('/forgot-password', name: 'app_forgot_password')]
+	#[Route('/forgot-password', name: 'app_forgot_password', methods: ['GET', 'POST'])]
 	public function forgotPassword(Request $request, UserRepository $userRepository, MailerInterface $mailer): Response
 	{
 		if ($request->isMethod('POST')) {
@@ -72,7 +71,7 @@ class SecurityController extends AbstractController
 		return $this->render('auth/forgot_password.html.twig');
 	}
 
-	#[Route('/reset-password/{token}', name: 'app_reset_password')]
+	#[Route('/reset-password/{token}', name: 'app_reset_password', methods: ['GET', 'POST'])]
 	public function resetPassword(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $hasher, string $token): Response
 	{
 

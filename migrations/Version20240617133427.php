@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240527124308 extends AbstractMigration
+final class Version20240617133427 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -19,11 +19,13 @@ final class Version20240527124308 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE user ADD roles JSON NOT NULL');
+        // this up() migration is auto-generated, please modify it to your needs
+        $this->addSql('ALTER TABLE video ADD video_id VARCHAR(255) NOT NULL');
     }
 
     public function down(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE user DROP roles');
+        // this down() migration is auto-generated, please modify it to your needs
+        $this->addSql('ALTER TABLE video DROP video_id');
     }
 }

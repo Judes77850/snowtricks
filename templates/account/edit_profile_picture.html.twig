@@ -1,0 +1,31 @@
+{# templates/account/edit_profile_picture.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Éditer Photo de Profil{% endblock %}
+
+{% block body %}
+    {% include 'header.twig' %}
+
+    <div class="container my-4">
+        <h1 class="mb-4">Éditer Photo de Profil</h1>
+
+        <div class="card">
+            <div class="card-body">
+                {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+
+                <div class="form-group">
+                    {{ form_label(form.file, null, {'label_attr': {'class': 'col-form-label'}}) }}
+                    {{ form_widget(form.file, {'attr': {'class': 'form-control-file'}}) }}
+                    {{ form_errors(form.file) }}
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Soumettre</button>
+                </div>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
