@@ -5,16 +5,17 @@
 {% block body %}
     {% include 'header.twig' %}
     <div class="container">
-        <h1>Mes tricks</h1>
+        <h1 class="pixelify-sans-font my-5">Mes tricks</h1>
         <ul class="list-group">
             {% for trick in tricks %}
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span>{{ trick.name }}</span>
-                    <div>
-                        <a href="{{ path('trick_edit', {'id': trick.id}) }}" class="btn btn-primary">Editer</a>
+                <li class="list-group-item d-flex justify-content-between col col-12">
+                    <span class="text-start col-3">{{ trick.name }}</span>
+                    <span class="col-3">{{ trick.getCreatedAt|date('d-m-y') }}</span>
+                    <div class="col-6 d-flex flex-row flex-wrap justify-content-end">
+                        <a href="{{ path('trick_edit', {'id': trick.id}) }}" class="pixel"><p>Editer</p></a>
                         <form method="post" action="{{ path('trick_delete', {'id': trick.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce trick ?')" style="display: inline;">
                             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ trick.id) }}">
-                            <button type="submit" class="btn btn-danger">Supprimer</button>
+                            <button type="submit" class="pixel second-color"><p>Supprimer</p></button>
                         </form>
                     </div>
                 </li>

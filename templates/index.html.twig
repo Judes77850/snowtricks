@@ -21,7 +21,7 @@
         <div class="last-figures col col-10 mx-auto">
             <div class="row">
                 {% for trick in tricks %}
-                    <div class="col-md-4 mb-4">
+                    <div class="col-xl-4 col-md-6 mb-4">
                         <div class="card h-100">
                             {% if trick.images is not empty and trick.images is not empty %}
                                 <img src="{{ asset('uploads/media/' ~ trick.images.first.path) }}" class="card-img-top object-fit-cover h-50"
@@ -35,7 +35,7 @@
                                 <p class="card-text">{{ trick.description|slice(0, 100) ~ '...' }}</p>
                             </div>
                             <div class="card-footer d-flex justify-content-around">
-                                <a href="{{ path('trick_show', {'id': trick.id}) }}" class="pixel"><p>Voir le détail</p>
+                                <a href="{{ path('trick_show', {'id': trick.id}) }}" class="pixel"><p>Voir +</p>
                                 </a>
                                 {% if is_granted('IS_AUTHENTICATED_FULLY') and app.user == trick.authorId %}
                                     <form action="{{ path('trick_delete', {'id': trick.id}) }}" method="post"

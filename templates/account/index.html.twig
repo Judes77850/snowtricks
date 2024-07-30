@@ -5,7 +5,7 @@
 {% block body %}
     {% include 'header.twig' %}
 
-    <div class="container">
+    <div class="container z-0">
         <h1>Mon compte</h1>
         <div class="card">
             <div class="card-body">
@@ -19,8 +19,8 @@
                 <p><strong>Email :</strong> {{ user.email }}</p>
                 <p><strong>Membre depuis :</strong> {{ user.createdAt|date('d/m/Y') }}</p>
 
-                <a href="{{ path('account_edit') }}" class="btn btn-primary">Modifier mon profil</a>
-                <a href="{{ path('account_tricks') }}" class="btn btn-primary">Mes tricks</a>
+                <a href="{{ path('account_edit') }}" class="pixel"><p>Modifier mon profil</p></a>
+                <a href="{{ path('account_tricks') }}" class="pixel"><p>Mes tricks</p></a>
             </div>
         </div>
     </div>

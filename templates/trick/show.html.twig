@@ -23,9 +23,9 @@
 
                 <h2 class="pixelify-sans-font fs-1 text-decoration-underline my-5">Médias</h2>
                 <div class="mx-auto">
-                    <div class="d-flex">
+                    <div class="d-flex flex-wrap">
                         {% if trick.videos|length > 0 %}
-                            <div class="col col-8">
+                            <div class="col col-10 col-md-8 mx-auto">
                                 {% for video in trick.videos %}
                                     <div class="col-md-10 m-3 mx-auto">
                                         <div class="ratio ratio-16x9">
@@ -40,10 +40,10 @@
                             <p>Aucune vidéo disponible pour ce trick.</p>
                         {% endif %}
                         {% if trick.images|length > 0 %}
-                            <div class="col col-4">
+                            <div class="col col-10 col-md-4 mx-auto">
                                 {% for image in trick.images %}
                                     <img src="{{ asset('uploads/media/' ~ image.path) }}" alt="{{ trick.name }}"
-                                         class="d-block w-100 rounded m-3">
+                                         class="d-block w-100 rounded m-3 mx-auto">
                                 {% endfor %}
                             </div>
                         {% else %}
@@ -88,7 +88,7 @@
                                              alt="Photo de profil" class="rounded-circle mr-3" width="50"
                                              height="50">
                                     {% endif %}
-                                    <h5 class="m-2">{{ comment.authorId.userName }}</h5>
+                                    <h5 class="m-2 second-color">{{ comment.authorId.userName }}</h5>
                                 </div>
                                 <small class="pixelify-sans-font">{{ comment.createdAt|date('d/m/Y H:i:s') }}</small>
                             </div>

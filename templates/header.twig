@@ -9,7 +9,7 @@
     </style>
 </head>
 <body>
-<header class="d-none d-md-block first-color-bg">
+<header class="d-none d-lg-block first-color-bg">
     <div class="d-flex align-items-center justify-content-between px-4">
         <a href="/" class="text-decoration-none">
             <h1 class="pixelify-sans-font second-color">Snowtricks</h1>
@@ -32,18 +32,18 @@
         </nav>
     </div>
 </header>
-<header class="d-md-none first-color-bg">
-    <nav>
-        <div class="navbar">
+<header class="d-lg-none first-color-bg">
+    <nav class="z-1">
+        <div class="navbar z-1">
             <div class="nav-container">
                 <input class="checkbox" type="checkbox"/>
-                <div class="hamburger-lines">
+                <div class="hamburger-lines z-1">
                     <span class="line line1"></span>
                     <span class="line line2"></span>
                     <span class="line line3"></span>
                 </div>
 
-                <div class="menu-items first-color-bg mb-5 fs-1">
+                <div class="menu-items first-color-bg mb-5 fs-1 z-1">
                     <li><a class="pixelify-sans-font text-decoration-none text-black" href="/">Accueil</a></li>
                     <li><a class="pixelify-sans-font text-decoration-none text-black" href="../tricks">Tricks</a>
                         {% if app.user is null %}
@@ -51,16 +51,16 @@
                     <li><a class="pixelify-sans-font text-decoration-none text-black" href="../register">Inscription</a></li>
                     {% else %}
                         <li><a class="pixelify-sans-font text-decoration-none text-black" href="../trick/new">Ajouter un trick</a></li>
-                        <li><a class="pixelify-sans-font text-decoration-none second-color"
-                               href="../../account">Hello {{ app.user.username }}</a></li>
-                        <li><a class="pixelify-sans-font text-decoration-none text-black" href="{{ path('app_logout') }}">Tchao !</a>
+                        <li><a class="pixelify-sans-font text-decoration-none text-black"
+                               href="../../account">Mon compte</a></li>
+                        <li><a class="pixelify-sans-font text-decoration-none text-muted" href="{{ path('app_logout') }}">Tchao !</a>
                         </li>
                     {% endif %}
 
                     </li>
                 </div>
             </div>
-            <div class="logo">
+            <div class="logo z-1">
                 <a href="/" class="text-decoration-none">
                     <h1 class="pixelify-sans-font second-color fs-1">Snowtricks</h1>
                 </a>

@@ -43,7 +43,7 @@
                                 <p class="card-text">{{ trick.description|slice(0, 100) ~ '...' }}</p>
                             </div>
                             <div class="card-footer d-flex justify-content-around">
-                                <a href="{{ path('trick_show', {'id': trick.id}) }}" class="pixel"><p>Voir le détail</p></a>
+                                <a href="{{ path('trick_show', {'id': trick.id}) }}" class="pixel"><p>Voir +</p></a>
                                 {% if is_granted('IS_AUTHENTICATED_FULLY') and app.user == trick.authorId %}
                                     <form action="{{ path('trick_delete', {'id': trick.id}) }}" method="post" class="mb-0">
                                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ trick.id) }}">

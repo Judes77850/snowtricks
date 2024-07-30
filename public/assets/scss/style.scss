@@ -157,12 +157,12 @@ header{
 .home-intro{
   background-image: url("../images/philipp-kammerer-BOMJAHOLhFk-unsplash.webp");
   background-size: cover;
+  background-repeat: no-repeat;
   background-position-y: -750px ;
-  height: 80vh;
-  @media (max-width: 768px) {
+  height: auto;
+  min-height: 70vh;
+  @media (max-width: 1080px) {
     background-position-y: 0px ;
-    background-size: contain;
-    height: 100vh;
-
+    background-size: cover;
   }
 }
