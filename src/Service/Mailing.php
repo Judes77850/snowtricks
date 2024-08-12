@@ -16,7 +16,7 @@ class Mailing
 	}
 
 	public function sending(
-		User $user, string $subject, string $template, $link
+		User $user, string $subject, string $template, string $link
 	){
 		$email = (new TemplatedEmail())
 			->from('compte@snowtricks.fr')

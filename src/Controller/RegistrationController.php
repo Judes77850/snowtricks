@@ -51,7 +51,7 @@ class RegistrationController extends AbstractController
 	}
 
 	#[Route('/register/confirmation/{token}', name: 'app_registration_confirmation', methods: ['GET'])]
-	public function accountConfirmation(UserRepository $userRepository, $token)
+	public function accountConfirmation(UserRepository $userRepository, string $token)
 	{
 		$user = $userRepository->findOneBy(['token' => $token]);
 
