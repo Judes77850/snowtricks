@@ -51,7 +51,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	#[ORM\Column(type: 'json')]
 	private array $roles = [];
 
-	#[ORM\OneToOne(cascade: ['persist', 'remove'])]
+	#[ORM\OneToOne(targetEntity: UserProfilePicture::class, mappedBy: 'user', cascade: ['persist', 'remove'])]
 	private ?UserProfilePicture $profilePicture = null;
 
 	public function __construct()
@@ -262,12 +262,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 	public function setProfilePicture(?UserProfilePicture $profilePicture): static
 	{
-		if ($profilePicture) {
+		if ($profilePicture !== null && $profilePicture->getUser() !== $this) {
 			$profilePicture->setUser($this);
 		}
 
 		$this->profilePicture = $profilePicture;
 
+		if ($profilePicture === null && $this->profilePicture !== null) {
+			$this->profilePicture->setUser(null);
+		}
+
 		return $this;
+
 	}
 }
