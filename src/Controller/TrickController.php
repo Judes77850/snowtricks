@@ -8,6 +8,7 @@ use App\Entity\Comment;
 use App\Form\CommentType;
 use App\Form\TrickType;
 use App\Repository\CategoriesRepository;
+use App\Repository\CommentRepository;
 use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -15,8 +16,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 class TrickController extends AbstractController
@@ -181,9 +182,9 @@ class TrickController extends AbstractController
 		return $this->redirectToRoute('tricks_index');
 	}
 	#[Route('/comment/{id}/delete', name: 'comment_delete', methods: ['POST'])]
-	public function deleteComment(Request $request, int $id): Response
+	public function deleteComment(Request $request, int $id, CommentRepository $commentRepository, EntityManagerInterface $entityManager): Response
 	{
-		$comment = $this->entityManager->getRepository(Comment::class)->find($id);
+		$comment = $commentRepository->find($id);
 
 		if (!$comment) {
 			throw $this->createNotFoundException('Commentaire non trouvé');
@@ -192,14 +193,16 @@ class TrickController extends AbstractController
 		$this->denyAccessUnlessGranted('delete', $comment);
 
 		$token = $request->request->get('_token');
-		if ($this->isCsrfTokenValid('delete' . $id, $token)) {
-			$this->entityManager->remove($comment);
-			$this->entityManager->flush();
+		$commentId = $id;
 
-			$this->addFlash('success', 'Commentaire supprimé avec succès.');
-		} else {
-			throw new AccessDeniedException('Invalid CSRF token.');
+		if (!$this->isCsrfTokenValid('delete' . $commentId, $token) || !is_int($commentId)) {
+			throw $this->createAccessDeniedException('Token CSRF invalide');
 		}
+
+		$entityManager->remove($comment);
+		$entityManager->flush();
+
+		$this->addFlash('success', 'Commentaire supprimé avec succès.');
 
 		return $this->redirectToRoute('trick_show', ['id' => $comment->getTrickId()->getId()]);
 	}

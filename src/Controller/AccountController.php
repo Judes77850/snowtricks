@@ -6,15 +6,12 @@ use App\Entity\User;
 use App\Entity\UserProfilePicture;
 use App\Form\UserType;
 use App\Form\ProfilePictureType;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use App\Service\FileUploader;
 
@@ -23,7 +20,7 @@ class AccountController extends AbstractController
 {
 	private EntityManagerInterface $entityManager;
 
-	public function __construct(EntityManagerInterface $entityManager, Security $security)
+	public function __construct(EntityManagerInterface $entityManager)
 	{
 		$this->entityManager = $entityManager;
 	}
@@ -47,7 +44,7 @@ class AccountController extends AbstractController
 
 	#[Route('/account/edit', name: 'account_edit', methods: ['GET', 'POST'])]
 	#[IsGranted('IS_AUTHENTICATED_FULLY')]
-	public function edit(Request $request): Response
+	public function edit(Request $request, UserPasswordHasherInterface $passwordHasher): Response
 	{
 		$user = $this->getUser();
 
@@ -57,7 +54,7 @@ class AccountController extends AbstractController
 		if ($form->isSubmitted() && $form->isValid()) {
 			$plainPassword = $form->get('plainPassword')->getData();
 			if ($plainPassword) {
-				$hashedPassword = $this->passwordHasher->hashPassword($user, $plainPassword);
+				$hashedPassword = $passwordHasher->hashPassword($user, $plainPassword);
 				$user->setPassword($hashedPassword);
 			}
 

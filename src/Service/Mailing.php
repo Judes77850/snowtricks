@@ -17,13 +17,14 @@ class Mailing
 
 	public function sending(
 		User $user, string $subject, string $template, string $link
-	){
+	): void
+	{
 		$email = (new TemplatedEmail())
 			->from('compte@snowtricks.fr')
 			->to($user->getEmail())
 			->subject($subject)
 			->htmlTemplate($template)
-			->context(['user'=>$user, 'link'=>$link]);
+			->context(['user' => $user, 'link' => $link]);
 
 		$this->mailer->send($email);
 	}
