@@ -15,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
@@ -190,11 +191,14 @@ class TrickController extends AbstractController
 
 		$this->denyAccessUnlessGranted('delete', $comment);
 
-		if ($this->isCsrfTokenValid('delete' . $comment->getId(), $request->request->get('_token'))) {
+		$token = $request->request->get('_token');
+		if ($this->isCsrfTokenValid('delete' . $id, $token)) {
 			$this->entityManager->remove($comment);
 			$this->entityManager->flush();
 
 			$this->addFlash('success', 'Commentaire supprimé avec succès.');
+		} else {
+			throw new AccessDeniedException('Invalid CSRF token.');
 		}
 
 		return $this->redirectToRoute('trick_show', ['id' => $comment->getTrickId()->getId()]);
