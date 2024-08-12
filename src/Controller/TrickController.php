@@ -16,8 +16,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 class TrickController extends AbstractController
@@ -193,7 +193,9 @@ class TrickController extends AbstractController
 		$this->denyAccessUnlessGranted('delete', $comment);
 
 		$token = $request->request->get('_token');
-		if (!$this->isCsrfTokenValid('delete' . $id, $token)) {
+		$commentId = $id;
+
+		if (!$this->isCsrfTokenValid('delete' . $commentId, $token) || !is_int($commentId)) {
 			throw $this->createAccessDeniedException('Token CSRF invalide');
 		}
 
