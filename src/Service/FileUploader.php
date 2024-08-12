@@ -72,10 +72,9 @@ class FileUploader
 				$dailymotionId = end($pathSegments);
 				$video->setVideoId($dailymotionId);
 				$trick->addVideo($video);
+			} else {
+				$trick->removeVideo($video);
 			}
-//            elseif ($video->getVideoname() === null || $video->getVideoId() === null) {
-//                $trick->removeVideo($video);
-//            }
 		}
 	}
 }
