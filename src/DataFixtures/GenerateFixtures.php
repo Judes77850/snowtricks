@@ -30,7 +30,7 @@ class GenerateFixtures extends Fixture
 		$this->tokenGeneratorService = $tokenGeneratorService;
 	}
 
-	public function load(ObjectManager $manager)
+	public function load(ObjectManager $manager): void
 	{
 		$usersData = json_decode(file_get_contents(__DIR__ . '/usersData.json'), true);
 		$users = [];
