@@ -27,6 +27,5 @@ class Mailing
 			->context(['user' => $user, 'link' => $link]);
 
 		$this->mailer->send($email);
-		return $email;
 	}
 }
