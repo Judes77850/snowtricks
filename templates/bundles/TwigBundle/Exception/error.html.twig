@@ -1,5 +1,14 @@
 {% extends 'base.html.twig' %}
 {% block 'body' %}
 
+<h1 class="pixelify-sans-font">An error occurred</h1>
+<p>
+    Oupsss ! Trop de poudreuse ici !
+</p>
+<p>
+    Error code: {{ status_code }} - {{ status_text }}
+</p>
+<a class="pixel" href="{{ path('homepage') }}"><p>Return to homepage</p></a>
+
 
 {% endblock %}
