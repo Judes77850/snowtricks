@@ -1,23 +1,22 @@
 {{ form_start(form, {'attr': {'class': 'form'}}) }}
                 {{ form_widget(form._token) }}
 
-<div class="form-group">
+<div class="form-group mt-4">
     {{ form_label(form.name, 'Nom du trick', {'label_attr': {'class': 'form-label'}}) }}
     {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
 </div>
 
-<div class="form-group">
+<div class="form-group mt-4">
     {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label'}}) }}
     {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
 </div>
 
-<div class="form-group">
+<div class="form-group mt-4">
     {{ form_label(form.categoryId, 'Catégorie du trick', {'label_attr': {'class': 'form-label'}}) }}
     {{ form_widget(form.categoryId, {'attr': {'class': 'form-control'}}) }}
 </div>
 
-<h2>Ajouter des Images</h2>
-<div id="image-collection-holder"
+<div class="mt-2" id="image-collection-holder"
      data-prototype="{{ include('trick/_image.html.twig', {form: form.images.vars.prototype})|e('html_attr') }}"
      data-index="{{ form.images|length > 0 ? form.images|last.vars.name + 1 : 0 }}">
     {% for imageForm in form.images %}
@@ -34,7 +33,6 @@
     <button type="button" class="add_image_link pixel m-4"><p>Ajouter une image</p></button>
 </div>
 
-<h2>Ajouter des Vidéos</h2>
 <div id="video-collection-holder"
      data-prototype="{{ form_widget(form.videos.vars.prototype)|e('html_attr') }}"
      data-index="{{ form.videos|length }}">

@@ -6,18 +6,35 @@
     {% include 'header.twig' %}
 
     <div class="container z-0">
-        <h1>Mon compte</h1>
-        <div class="card">
-            <div class="card-body">
-                <a href="{{ path('edit_profile_picture') }}">
-                    <img class="rounded-circle mr-3" width="200" height="200"
-                         src="{{ asset('uploads/media/' ~ user.profilePicture.filename) }}" alt="Photo de profil"
-                         class="img-thumbnail mb-3">
+        <h1 class="mb-5 pixelify-sans-font">Mon compte</h1>
+        <div>
+            <div>
+                <div class="d-flex justify-content-around align-items-center mb-5">
+                    {% if user.profilePicture %}
+                        <div>
+                            <a href="{{ path('edit_profile_picture') }}" alt="touche pour éditer l'image">
+                                <img class="rounded mr-3" width="200" height="200"
+                                     src="{{ asset('uploads/media/' ~ user.profilePicture.filename) }}"
+                                     alt="Photo de profil"
+                                     class="img-thumbnail mb-3">
 
-                </a>
-                <p><strong>Nom :</strong> {{ user.userName }}</p>
-                <p><strong>Email :</strong> {{ user.email }}</p>
-                <p><strong>Membre depuis :</strong> {{ user.createdAt|date('d/m/Y') }}</p>
+                            </a>
+                        </div>
+                    {% else %}
+                        <div>
+                            <a href="{{ path('edit_profile_picture') }}" class="pixel" alt="touche pour éditer l'image">
+                                <p>Ajouter une photo de profil</p>
+                            </a>
+                        </div>
+                    {% endif %}
+                    <div class="text-end">
+                        <p><span class="pixelify-sans-font fs-5">Nom :</span> {{ user.userName }}</p>
+                        <p><span class="pixelify-sans-font fs-5">Email :</span> {{ user.email }}</p>
+                        <p>
+                            <span class="pixelify-sans-font fs-5">Membre depuis :</span> {{ user.createdAt|date('d/m/Y') }}
+                        </p>
+                    </div>
+                </div>
 
                 <a href="{{ path('account_edit') }}" class="pixel"><p>Modifier mon profil</p></a>
                 <a href="{{ path('account_tricks') }}" class="pixel"><p>Mes tricks</p></a>
