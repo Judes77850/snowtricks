@@ -36,7 +36,8 @@ class TrickType extends AbstractType
 				'label' => false,
 				'constraints' => [
 					new Count(min: 1, minMessage: 'Merci d\'ajouter au moins une image', groups: ['new', 'edit'])
-				]
+				],
+				'mapped' => true,
 			])
 			->add('videos', CollectionType::class, [
 				'entry_type' => VideoType::class,

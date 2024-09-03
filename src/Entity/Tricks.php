@@ -49,6 +49,10 @@ class Tricks
 	#[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'trick', cascade: ['persist', 'remove'], orphanRemoval: true)]
 	private Collection $images;
 
+	#[ORM\ManyToOne(targetEntity: Image::class, inversedBy: 'tricks')]
+	#[ORM\JoinColumn(nullable: true)]
+	private ?Image $mainImage = null;
+
 	#[ORM\OneToMany(targetEntity: Video::class, mappedBy: 'trick' , cascade: ['persist', 'remove'], orphanRemoval: true)]
 	private Collection $videos;
 
@@ -94,6 +98,18 @@ class Tricks
 		$this->description = $description;
 
 		return $this;
+	}
+
+	public function setMainImage(?Image $image): static
+	{
+		$this->mainImage = $image;
+
+		return $this;
+	}
+
+	public function getMainImage(): ?Image
+	{
+		return $this->mainImage;
 	}
 
 	public function getSlug(): ?string

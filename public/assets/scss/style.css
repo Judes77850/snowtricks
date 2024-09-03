@@ -11954,6 +11954,10 @@ textarea.form-control-lg {
   font-style: normal;
 }
 
+.container {
+  max-width: 1400px;
+}
+
 .first-color {
   color: rgb(185, 177, 160);
 }
@@ -12108,13 +12112,54 @@ header {
   background-repeat: no-repeat;
   background-position-y: -750px;
   height: auto;
-  min-height: 70vh;
+  min-height: 100vh;
 }
-@media (max-width: 1080px) {
+@media (max-width: 1600px) {
   .home-intro {
     background-position-y: 0px;
     background-size: cover;
   }
+  .home-intro .scroll-down {
+    width: 40px;
+    height: 40px;
+  }
+}
+.home-intro .scroll-down {
+  width: 80px;
+  height: 80px;
+}
+
+.trick-card {
+  text-decoration: none;
+  color: black;
+}
+
+.card {
+  box-shadow: rgba(203, 200, 191, 0) 2px 2px 5px 5px;
+  transition-duration: 400ms;
+  height: 500px;
+}
+.card:hover {
+  box-shadow: rgba(147, 147, 147, 0.59) 2px 2px 5px 5px;
+  transition-duration: 400ms;
+}
+
+.to-delete:hover path {
+  stroke: rgb(157, 78, 112); /* Change la couleur de la bordure du SVG en rouge */
+}
+
+.to-edit:hover path {
+  stroke: #008cff; /* Change la couleur de la bordure du SVG en rouge */
+}
+
+.trick-background {
+  background-size: cover;
+  background-position: center;
+  height: 93vh;
+}
+
+.trick-info {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgb(255, 255, 255));
 }
 
 /*# sourceMappingURL=style.css.map */

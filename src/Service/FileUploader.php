@@ -32,12 +32,22 @@ class FileUploader
 
 	public function uploadImages(Tricks $trick): void
 	{
+		$mainImage = null;
+
 		foreach ($trick->getImages() as $image) {
 			if ($image->getFile() !== null) {
 				$image->setPath($this->upload($image->getFile()));
+
+				if ($image->getIsMain()) {
+					$mainImage = $image;
+				}
 			} elseif ($image->getPath() === null && $image->getFile() === null) {
 				$trick->removeImage($image);
 			}
+		}
+
+		if ($mainImage !== null) {
+			$trick->setMainImage($mainImage);
 		}
 	}
 

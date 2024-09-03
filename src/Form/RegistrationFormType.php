@@ -10,6 +10,10 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotCompromisedPassword;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class RegistrationFormType extends AbstractType
 {
@@ -30,6 +34,23 @@ class RegistrationFormType extends AbstractType
 	            ],
 	            'second_options'=>[
 		            'label'=>'Confirmez votre mot de passe',
+	            ],
+	            'constraints' => [
+		            new NotBlank([
+			            'message' => 'Veuillez entrer un mot de passe',
+		            ]),
+		            new Length([
+			            'min' => 8,
+			            'minMessage' => 'Votre mot de passe doit contenir au moins {{ limit }} caractères',
+			            'max' => 4096,
+		            ]),
+		            new Regex([
+			            'pattern' => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).+$/',
+			            'message' => 'Votre mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.',
+		            ]),
+		            new NotCompromisedPassword([
+			            'message' => 'Ce mot de passe a été divulgué dans une fuite de données, veuillez en choisir un autre.',
+		            ]),
 	            ],
             ])
             ->add('userName', TextType::class, [

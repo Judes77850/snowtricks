@@ -6,6 +6,7 @@ namespace App\Form;
 
 use App\Entity\Image;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -24,6 +25,11 @@ class ImageType extends AbstractType
 				'constraints' => [
 					new NotNull(message: 'veuillez renseigner ce champ', groups: ['new'])
 				]
+			])
+			->add('isMain', CheckboxType::class, [
+				'label' => 'Image principale:',
+				'required' => false,
+				'mapped' => true,
 			]);
 	}
 

@@ -8,20 +8,27 @@
   font-style: normal;
 }
 
-.first-color{
-  color: rgb(185,177,160);
-}
-.first-color-bg{
-  background-color: rgb(210, 206, 198);
-}
-.second-color{
-  color: rgb(157,78,112);
-}
-.second-color-bg{
-  background-color: rgb(157,78,112);
+.container{
+  max-width: 1400px;
 }
 
-header{
+.first-color {
+  color: rgb(185, 177, 160);
+}
+
+.first-color-bg {
+  background-color: rgb(210, 206, 198);
+}
+
+.second-color {
+  color: rgb(157, 78, 112);
+}
+
+.second-color-bg {
+  background-color: rgb(157, 78, 112);
+}
+
+header {
   box-shadow: #a8a8a8 5px 5px 10px;
 }
 
@@ -94,7 +101,7 @@ header{
   height: 4px;
   width: 100%;
   border-radius: 10px;
-  background: rgb(157,78,112);
+  background: rgb(157, 78, 112);
 }
 
 .nav-container .hamburger-lines .line1 {
@@ -154,15 +161,58 @@ header{
   transform: rotate(-45deg);
 }
 
-.home-intro{
+.home-intro {
   background-image: url("../images/philipp-kammerer-BOMJAHOLhFk-unsplash.webp");
   background-size: cover;
   background-repeat: no-repeat;
-  background-position-y: -750px ;
+  background-position-y: -750px;
   height: auto;
-  min-height: 70vh;
-  @media (max-width: 1080px) {
-    background-position-y: 0px ;
+  min-height: 100vh;
+  @media (max-width: 1600px) {
+    background-position-y: 0px;
     background-size: cover;
+    .scroll-down {
+      width: 40px;
+      height: 40px;
+    }
   }
+
+  .scroll-down {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+.trick-card {
+  text-decoration: none;
+  color: black;
+}
+
+.card {
+  box-shadow: rgba(203, 200, 191, 0) 2px 2px 5px 5px;
+  transition-duration: 400ms;
+  height: 500px;
+
+  &:hover {
+    box-shadow: rgba(147, 147, 147, 0.59) 2px 2px 5px 5px;
+    transition-duration: 400ms;
+  }
+}
+
+.to-delete:hover path {
+  stroke: rgb(157, 78, 112); /* Change la couleur de la bordure du SVG en rouge */
+}
+
+.to-edit:hover path {
+  stroke: #008cff; /* Change la couleur de la bordure du SVG en rouge */
+}
+
+.trick-background {
+  background-size: cover;
+  background-position: center;
+  height: 93vh;
+}
+
+.trick-info {
+  background: linear-gradient( 180deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 1));
 }

@@ -21,6 +21,9 @@ class Image
     #[ORM\JoinColumn(nullable: false)]
     private ?Tricks $trick = null;
 
+	#[ORM\Column(type: 'boolean')]
+	private bool $isMain = false;
+
 	private ?File $file = null;
 
     public function getId(): ?int
@@ -39,6 +42,18 @@ class Image
 
         return $this;
     }
+
+	public function getIsMain(): bool
+	{
+		return $this->isMain;
+	}
+
+	public function setIsMain(bool $isMain): static
+	{
+		$this->isMain = $isMain;
+
+		return $this;
+	}
 
     public function getTrick(): ?Tricks
     {

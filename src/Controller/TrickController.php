@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 class TrickController extends AbstractController
@@ -37,7 +38,6 @@ class TrickController extends AbstractController
 		$trick->setCreatedAt(new \DateTimeImmutable());
 
 		$user = $this->security->getUser();
-
 		$trick->setAuthorId($user);
 
 		$form = $this->createForm(TrickType::class, $trick, ['validation_groups' => 'new']);
@@ -45,18 +45,29 @@ class TrickController extends AbstractController
 
 		if ($form->isSubmitted() && $form->isValid()) {
 			$fileUploader->uploadImages($trick);
-
 			$fileUploader->uploadVideos($trick);
+
+			$mainImageSet = false;
+			foreach ($trick->getImages() as $image) {
+				if ($image->getIsMain()) {
+					$trick->setIsMain($image);
+					$mainImageSet = true;
+					break;
+				}
+			}
+
+			if (!$mainImageSet && $trick->getImages()->count() > 0) {
+				$trick->setIsMain($trick->getImages()->first());
+			}
 
 			$trick->setSlug($slugger->slug($trick->getName())->lower());
 
 			$this->entityManager->persist($trick);
-
 			$this->entityManager->flush();
 
 			$this->addFlash('success', 'Trick créé avec succès.');
 
-			return $this->redirectToRoute('trick_show', ['id' => $trick->getId()]);
+			return $this->redirectToRoute('trick_show', ['slug' => $trick->getSlug()]);
 		}
 
 		return $this->render('trick/new.html.twig', [
@@ -64,11 +75,11 @@ class TrickController extends AbstractController
 		]);
 	}
 
-	#[Route('/trick/{id}', name: 'trick_show', methods: ['GET', 'POST'])]
+	#[Route('/trick/{slug}', name: 'trick_show', methods: ['GET', 'POST'])]
 	#[IsGranted('IS_AUTHENTICATED_FULLY')]
-	public function show(int $id, Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
+	public function show(string $slug, Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
 	{
-		$trick = $entityManager->getRepository(Tricks::class)->find($id);
+		$trick = $entityManager->getRepository(Tricks::class)->findOneBy(['slug' => $slug]);
 
 		if (!$trick) {
 			throw $this->createNotFoundException('Trick not found');
@@ -86,7 +97,7 @@ class TrickController extends AbstractController
 			$entityManager->persist($comment);
 			$entityManager->flush();
 
-			return $this->redirectToRoute('trick_show', ['id' => $trick->getId()]);
+			return $this->redirectToRoute('trick_show', ['slug' => $trick->getSlug()]);
 		}
 
 		$queryBuilder = $entityManager->getRepository(Comment::class)->createQueryBuilder('c')
@@ -147,6 +158,20 @@ class TrickController extends AbstractController
 		if ($form->isSubmitted() && $form->isValid()) {
 			$fileUploader->uploadImages($trick);
 			$fileUploader->uploadVideos($trick);
+
+			$mainImageSet = false;
+			foreach ($trick->getImages() as $image) {
+				if ($image->getIsMain()) {
+					$trick->setMainImage($image);
+					$mainImageSet = true;
+					break;
+				}
+			}
+
+			if (!$mainImageSet && $trick->getImages()->count() > 0) {
+				$trick->setMainImage($trick->getImages()->first());
+			}
+
 			$this->entityManager->flush();
 
 			$this->addFlash('success', 'Trick modifié avec succès.');
@@ -201,6 +226,6 @@ class TrickController extends AbstractController
 
 		$this->addFlash('success', 'Commentaire supprimé avec succès.');
 
-		return $this->redirectToRoute('trick_show', ['id' => $comment->getTrickId()->getId()]);
+		return $this->redirectToRoute('trick_show', ['slug' => $comment->getTrickId()->getSlug()]);
 	}
 }
