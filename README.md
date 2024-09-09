@@ -1,5 +1,7 @@
 # SnowTricks
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/bf9a33b8877046bc85789189047a076a)](https://app.codacy.com/gh/Judes77850/snowtricks?utm_source=github.com&utm_medium=referral&utm_content=Judes77850/snowtricks&utm_campaign=Badge_Grade)
+
 Bienvenue sur **SnowTricks**, un site communautaire dédié aux passionnés de snowboard ! Ce projet a été développé avec le framework Symfony et permet aux utilisateurs de répertorier, partager et discuter des figures (tricks) de snowboard.
 
 ## Fonctionnalités
