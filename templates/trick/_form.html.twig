@@ -77,14 +77,13 @@
                 if (this.checked) {
                     mainImageCheckboxes.forEach(function (otherCheckbox) {
                         if (otherCheckbox !== checkbox) {
-                            otherCheckbox.checked = false; // Décocher les autres cases
+                            otherCheckbox.checked = false;
                         }
                     });
                 }
             });
         });
 
-        // Ajout dynamique d'une image
         var imageCollectionHolder = document.getElementById('image-collection-holder');
         var addImageButton = document.querySelector('.add_image_link');
         var imageIndex = parseInt(imageCollectionHolder.dataset.index, 10) || 0;
@@ -146,7 +145,6 @@
             videoCollectionHolder.appendChild(newFormDiv);
         }
 
-        // Boutons de suppression pour les éléments existants
         document.querySelectorAll('.remove-image-button').forEach(function (button) {
             button.addEventListener('click', function () {
                 button.parentElement.remove();
