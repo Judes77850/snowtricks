@@ -25,14 +25,14 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row d-flex mx-auto">
             {% if tricks is empty %}
                 <div class="col">
                     <p class="text-center">Aucun trick à afficher pour le moment.</p>
                 </div>
             {% else %}
                 {% for trick in tricks %}
-                    <a class="trick-card col-xl-4 col-md-6 mb-4" href="{{ path('trick_show', {'slug': trick.slug}) }}">
+                    <a class="trick-card col-xl-4 col-md-6 mb-4 mx-auto" href="{{ path('trick_show', {'slug': trick.slug}) }}">
                         <div>
                             <div class="card">
                                 {% if trick.images is not empty and trick.images is not empty %}
@@ -70,9 +70,11 @@
                                               class="mb-0">
                                             <input type="hidden" name="_token"
                                                    value="{{ csrf_token('delete' ~ trick.id) }}">
-                                            <button type="submit" class="btn" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette figure ?')">
+                                            <button type="submit" class="btn"
+                                                    onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette figure ?')">
                                                 <p class="d-flex justify-content-center align-items-center my-auto to-delete"><?xml version="1.0" encoding="UTF-8"?>
-                                                    <svg class="to-delete" width="24px" height="24px" viewBox="0 0 24 24"
+                                                    <svg class="to-delete" width="24px" height="24px"
+                                                         viewBox="0 0 24 24"
                                                          stroke-width="1.5"
                                                          fill="none" xmlns="http://www.w3.org/2000/svg" color="#111111">
                                                         <path d="M20 9L18.005 20.3463C17.8369 21.3026 17.0062 22 16.0353 22H7.96474C6.99379 22 6.1631 21.3026 5.99496 20.3463L4 9"

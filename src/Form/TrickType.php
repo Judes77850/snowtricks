@@ -4,6 +4,8 @@ namespace App\Form;
 
 use App\Entity\Categories;
 use App\Entity\Tricks;
+use App\Form\ImageType;
+use App\Form\VideoType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -24,21 +26,26 @@ class TrickType extends AbstractType
 				'label' => 'Catégorie du trick',
 				'class' => Categories::class,
 				'placeholder' => 'Choisissez une catégorie',
-				'choice_label' => 'name'
+				'choice_label' => 'name',
 			])
 
 			->add('images', CollectionType::class, [
 				'entry_type' => ImageType::class,
-				'entry_options' => ['label' => false],
+				'entry_options' => ['label' => false],  // Suppression de la logique conditionnelle ici
 				'allow_add' => true,
 				'allow_delete' => true,
 				'by_reference' => false,
 				'label' => false,
 				'constraints' => [
-					new Count(min: 1, minMessage: 'Merci d\'ajouter au moins une image', groups: ['new', 'edit'])
+					new Count([
+						'min' => 1,
+						'minMessage' => 'Merci d\'ajouter au moins une image',
+						'groups' => ['new', 'edit'],
+					])
 				],
 				'mapped' => true,
 			])
+
 			->add('videos', CollectionType::class, [
 				'entry_type' => VideoType::class,
 				'entry_options' => ['label' => false],
@@ -47,8 +54,12 @@ class TrickType extends AbstractType
 				'by_reference' => false,
 				'label' => false,
 				'constraints' => [
-					new Count(min: 1, minMessage: 'Merci d\'ajouter au moins une video', groups: ['new', 'edit'])
-				]
+					new Count([
+						'min' => 1,
+						'minMessage' => 'Merci d\'ajouter au moins une vidéo',
+						'groups' => ['new', 'edit'],
+					])
+				],
 			]);
 	}
 
@@ -59,7 +70,7 @@ class TrickType extends AbstractType
 			'csrf_protection' => true,
 			'csrf_field_name' => '_token',
 			'csrf_token_id' => 'trick_item',
-			'validation_groups' => []
+			'validation_groups' => [],
 		]);
 	}
 }

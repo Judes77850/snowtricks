@@ -24,34 +24,25 @@
         <div class="image-item">
             {% if imageForm.vars.data and imageForm.vars.data.path %}
                 <div>
-                    <img class="w-50 mt-4" src="{{ asset('uploads/media/') }}{{ imageForm.vars.data.path }}"
-                         alt="Image">
+                    <img class="w-50 mt-4" src="{{ asset('uploads/media/') }}{{ imageForm.vars.data.path }}" alt="Image">
                 </div>
             {% endif %}
 
             <span class="mx-4">
-            {{ form_row(imageForm.file) }}
+                {{ form_row(imageForm.file) }}
             </span>
 
             <span class="mx-4">
-            {{ form_row(imageForm.isMain) }}
-            <button type="button" class="btn btn-danger remove-image-button m-4">
-                <svg width="24px"
-                     height="24px" viewBox="0 0 24 24"
-                     stroke-width="1.5"
-                     fill="none"
-                     xmlns="http://www.w3.org/2000/svg"
-                     color="#111111">
-                    <path d="M20 9L18.005 20.3463C17.8369 21.3026 17.0062 22 16.0353 22H7.96474C6.99379 22 6.1631 21.3026 5.99496 20.3463L4 9"
-                          stroke="#000000" stroke-width="1.5" stroke-linecap="round"
-                          stroke-linejoin="round"></path>
-                    <path d="M21 6L15.375 6M3 6L8.625 6M8.625 6V4C8.625 2.89543 9.52043 2 10.625 2H13.375C14.4796 2 15.375 2.89543 15.375 4V6M8.625 6L15.375 6"
-                          stroke="#000000" stroke-width="1.5" stroke-linecap="round"
-                          stroke-linejoin="round"></path>
-                </svg>
-            </button>
+                {{ form_row(imageForm.isMain, {'attr': {'class': 'main-image-checkbox'}}) }} <!-- Classe ajoutée ici -->
+                <button type="button" class="btn btn-danger remove-image-button m-4">
+                    <svg width="24px" height="24px" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="#111111">
+                        <path d="M20 9L18.005 20.3463C17.8369 21.3026 17.0062 22 16.0353 22H7.96474C6.99379 22 6.1631 21.3026 5.99496 20.3463L4 9"
+                              stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <path d="M21 6L15.375 6M3 6L8.625 6M8.625 6V4C8.625 2.89543 9.52043 2 10.625 2H13.375C14.4796 2 15.375 2.89543 15.375 4V6M8.625 6L15.375 6"
+                              stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </button>
             </span>
-
         </div>
     {% endfor %}
     {{ form_errors(form.images) }}
@@ -79,6 +70,21 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        var mainImageCheckboxes = document.querySelectorAll('.main-image-checkbox');
+
+        mainImageCheckboxes.forEach(function (checkbox) {
+            checkbox.addEventListener('change', function () {
+                if (this.checked) {
+                    mainImageCheckboxes.forEach(function (otherCheckbox) {
+                        if (otherCheckbox !== checkbox) {
+                            otherCheckbox.checked = false; // Décocher les autres cases
+                        }
+                    });
+                }
+            });
+        });
+
+        // Ajout dynamique d'une image
         var imageCollectionHolder = document.getElementById('image-collection-holder');
         var addImageButton = document.querySelector('.add_image_link');
         var imageIndex = parseInt(imageCollectionHolder.dataset.index, 10) || 0;
@@ -100,8 +106,23 @@
             });
 
             imageCollectionHolder.appendChild(newFormDiv);
+
+            // Ajouter le comportement de déselection des autres cases pour les nouveaux champs d'image
+            var newCheckbox = newFormDiv.querySelector('.main-image-checkbox');
+            newCheckbox.addEventListener('change', function () {
+                if (this.checked) {
+                    mainImageCheckboxes.forEach(function (otherCheckbox) {
+                        if (otherCheckbox !== newCheckbox) {
+                            otherCheckbox.checked = false;
+                        }
+                    });
+                }
+            });
+
+            mainImageCheckboxes = document.querySelectorAll('.main-image-checkbox'); // Réactualiser la liste des cases
         }
 
+        // Code pour les vidéos (inchangé)
         var videoCollectionHolder = document.getElementById('video-collection-holder');
         var addVideoButton = document.querySelector('.add_video_link');
         var videoIndex = parseInt(videoCollectionHolder.dataset.index, 10) || 0;
@@ -125,6 +146,7 @@
             videoCollectionHolder.appendChild(newFormDiv);
         }
 
+        // Boutons de suppression pour les éléments existants
         document.querySelectorAll('.remove-image-button').forEach(function (button) {
             button.addEventListener('click', function () {
                 button.parentElement.remove();
@@ -137,4 +159,5 @@
             });
         });
     });
+
 </script>

@@ -13,6 +13,7 @@ use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -79,12 +80,14 @@ class TrickController extends AbstractController
 	#[IsGranted('IS_AUTHENTICATED_FULLY')]
 	public function show(string $slug, Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
 	{
+		// Récupére le trick par son slug
 		$trick = $entityManager->getRepository(Tricks::class)->findOneBy(['slug' => $slug]);
 
 		if (!$trick) {
 			throw $this->createNotFoundException('Trick not found');
 		}
 
+		// Crée et traite le formulaire de commentaire
 		$comment = new Comment();
 		$form = $this->createForm(CommentType::class, $comment);
 		$form->handleRequest($request);
@@ -100,6 +103,7 @@ class TrickController extends AbstractController
 			return $this->redirectToRoute('trick_show', ['slug' => $trick->getSlug()]);
 		}
 
+		// Récupére les commentaires associés au trick
 		$queryBuilder = $entityManager->getRepository(Comment::class)->createQueryBuilder('c')
 			->where('c.trickId = :trickId')
 			->setParameter('trickId', $trick->getId())
@@ -108,15 +112,24 @@ class TrickController extends AbstractController
 		$pagination = $paginator->paginate(
 			$queryBuilder,
 			$request->query->getInt('page', 1),
-			9
+			9 // Nombre de commentaires par page
 		);
+
+		$totalItemCount = $pagination->getTotalItemCount();
+		$currentPage = $pagination->getCurrentPageNumber();
+		$itemsPerPage = $pagination->getItemNumberPerPage();
+
+		$hasMoreComments = $totalItemCount > $itemsPerPage * $currentPage;
 
 		return $this->render('trick/show.html.twig', [
 			'trick' => $trick,
 			'comments' => $pagination,
 			'form' => $form->createView(),
+			'has_more_comments' => $hasMoreComments, // Assurez-vous que cette variable est passée au template
 		]);
 	}
+
+
 
 	#[Route('/tricks', name: 'tricks_index', methods: ['GET'])]
 	public function index(Request $request, CategoriesRepository $categoriesRepository): Response
@@ -227,5 +240,47 @@ class TrickController extends AbstractController
 		$this->addFlash('success', 'Commentaire supprimé avec succès.');
 
 		return $this->redirectToRoute('trick_show', ['slug' => $comment->getTrickId()->getSlug()]);
+	}
+
+	#[Route('/trick/{id}/comments/load-more', name: 'trick_comments_load_more', methods: ['GET'])]
+	public function loadMoreComments(Request $request, EntityManagerInterface $entityManager, int $id): JsonResponse
+	{
+		$offset = $request->query->getInt('offset', 0);
+		$limit = 10;
+
+		$trick = $entityManager->getRepository(Tricks::class)->find($id);
+		if (!$trick) {
+			return new JsonResponse(['error' => 'Trick non trouvé'], 404);
+		}
+
+		$comments = $entityManager->getRepository(Comment::class)
+			->createQueryBuilder('c')
+			->where('c.trickId = :trickId')
+			->setParameter('trickId', $trick->getId())
+			->orderBy('c.createdAt', 'DESC')
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+			->getQuery()
+			->getResult();
+
+		$hasMoreComments = $entityManager->getRepository(Comment::class)
+				->createQueryBuilder('c')
+				->where('c.trickId = :trickId')
+				->setParameter('trickId', $trick->getId())
+				->orderBy('c.createdAt', 'DESC')
+				->setFirstResult($offset + $limit)
+				->setMaxResults(1)
+				->getQuery()
+				->getOneOrNullResult() !== null;
+
+		$html = $this->renderView('trick/comment_card.html.twig', [
+			'comments' => $comments,
+		]);
+
+		return new JsonResponse([
+			'content' => $html,
+			'nextOffset' => $offset + $limit,
+			'hasMoreComments' => $hasMoreComments,
+		]);
 	}
 }

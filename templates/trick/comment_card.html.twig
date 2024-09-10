@@ -1,0 +1,37 @@
+{# templates/comment/comment_card.html.twig #}
+{% for comment in comments %}
+    <div class="list-group-item list-group-item-action col col-10 mb-3">
+        <div class="d-flex w-100 justify-content-between">
+            <div class="d-flex align-items-center">
+                {% if comment.authorId.profilePicture %}
+                    <img src="{{ asset('uploads/media/' ~ comment.authorId.profilePicture.filename) }}"
+                         alt="Photo de profil" class="rounded mr-3" width="50" height="50">
+                {% endif %}
+                <h5 class="m-2 second-color">{{ comment.authorId.userName }}</h5>
+            </div>
+            <small class="pixelify-sans-font">{{ comment.createdAt|date('d/m/y à H:i') }}</small>
+        </div>
+        <p class="mb-1">{{ comment.content }}</p>
+
+        {% if is_granted('IS_AUTHENTICATED_FULLY') and app.user == comment.authorId %}
+            <form action="{{ path('comment_delete', {'id': comment.id}) }}" method="post" class="mt-2">
+                <input type="hidden" name="_method" value="DELETE">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ comment.id) }}">
+                <button type="submit">
+                    <svg
+                            class="to-delete" width="24px" height="24px" viewBox="0 0 24 24"
+                            stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg"
+                            color="#111111">
+                        <path d="M20 9L18.005 20.3463C17.8369 21.3026 17.0062 22 16.0353 22H7.96474C6.99379 22 6.1631 21.3026 5.99496 20.3463L4 9"
+                              stroke="#000000" stroke-width="1.5" stroke-linecap="round"
+                              stroke-linejoin="round"></path>
+                        <path d="M21 6L15.375 6M3 6L8.625 6M8.625 6V4C8.625 2.89543 9.52043 2 10.625 2H13.375C14.4796 2 15.375 2.89543 15.375 4V6M8.625 6L15.375 6"
+                              stroke="#000000" stroke-width="1.5" stroke-linecap="round"
+                              stroke-linejoin="round"></path>
+                    </svg>
+                </button>
+            </form>
+        {% endif %}
+        <hr>
+    </div>
+{% endfor %}

@@ -15,22 +15,62 @@
                     {% else %}
                     <div class="trick-background">
                         {% endif %}
-                        <div class="trick-info col col-8 d-flex justify-content-around align-items-center mx-auto">
+                        <div class="trick-info col col-11 col-lg-8 d-flex justify-content-around align-items-center mx-auto">
                             <div class="col col-12">
                                 <h1 class="pixelify-sans-font my-3 text-center text-decoration-underline">{{ trick.name }}</h1>
-                                <p class="p-2 my-4 text-center fs-4">{{ trick.description }}</p>
+                                <p class="p-4 my-4 text-center fs-4">{{ trick.description }}</p>
                                 <div class="d-flex justify-content-around p-0 m-0">
-                                    <p><strong>Créé le :</strong> {{ trick.createdAt|date('d/m/Y H:i:s') }}</p>
-                                    <p><strong>Catégorie :</strong> {{ trick.categoryId.name }}</p>
-                                    <p><strong>Auteur :</strong> {{ trick.authorId.userName }}</p>
+                                    <p class="text-center"><strong>Créé le :</strong> {{ trick.createdAt|date('d/m/Y H:i:s') }}</p>
+                                    <p class="text-center"><strong>Catégorie :</strong> {{ trick.categoryId.name }}</p>
+                                    <p class="text-center"><strong>Auteur :</strong> {{ trick.authorId.userName }}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div> {# Close the trick-background div #}
+                </div>
+
+                {% if is_granted('IS_AUTHENTICATED_FULLY') and app.user == trick.authorId %}
+                    <div class="bg-transparent mx-auto d-flex justify-content-end">
+                        <form action="{{ path('trick_edit', {'id': trick.id}) }}" method="post" class="mb-0">
+                            <input type="hidden" name="_token" value="{{ csrf_token('edit' ~ trick.id) }}">
+                            <button type="submit" class="btn">
+                                <p class="d-flex justify-content-center align-items-center my-auto to-edit">
+                                    <!-- SVG Icon for Edit -->
+                                    <svg class="to-edit" width="24px" height="24px" viewBox="0 0 24 24"
+                                         stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                         color="#000000">
+                                        <path d="M14.3632 5.65156L15.8431 4.17157C16.6242 3.39052 17.8905 3.39052 18.6716 4.17157L20.0858 5.58579C20.8668 6.36683 20.8668 7.63316 20.0858 8.41421L18.6058 9.8942M14.3632 5.65156L4.74749 15.2672C4.41542 15.5993 4.21079 16.0376 4.16947 16.5054L3.92738 19.2459C3.87261 19.8659 4.39148 20.3848 5.0115 20.33L7.75191 20.0879C8.21972 20.0466 8.65806 19.8419 8.99013 19.5099L18.6058 9.8942M14.3632 5.65156L18.6058 9.8942"
+                                              stroke="#000000" stroke-width="1.5" stroke-linecap="round"
+                                              stroke-linejoin="round"></path>
+                                    </svg>
+                                </p>
+                            </button>
+                        </form>
+                        <form action="{{ path('trick_delete', {'id': trick.id}) }}" method="post" class="mb-0">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ trick.id) }}">
+                            <button type="submit" class="btn"
+                                    onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette figure ?')">
+                                <p class="d-flex justify-content-center align-items-center my-auto to-delete">
+                                    <!-- SVG Icon for Delete -->
+                                    <svg class="to-delete" width="24px" height="24px" viewBox="0 0 24 24"
+                                         stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                         color="#111111">
+                                        <path d="M20 9L18.005 20.3463C17.8369 21.3026 17.0062 22 16.0353 22H7.96474C6.99379 22 6.1631 21.3026 5.99496 20.3463L4 9"
+                                              stroke="#000000" stroke-width="1.5" stroke-linecap="round"
+                                              stroke-linejoin="round"></path>
+                                        <path d="M21 6L15.375 6M3 6L8.625 6M8.625 6V4C8.625 2.89543 9.52043 2 10.625 2H13.375C14.4796 2 15.375 2.89543 15.375 4V6M8.625 6L15.375 6"
+                                              stroke="#000000" stroke-width="1.5" stroke-linecap="round"
+                                              stroke-linejoin="round"></path>
+                                    </svg>
+                                </p>
+                            </button>
+                        </form>
+                    </div>
+                {% endif %}
+
                 <div class="container w-100 col col-12">
                     <h2 class="pixelify-sans-font fs-1 text-decoration-underline my-5">Médias</h2>
-                    <div class="mx-auto col col-12">
+                    <div class="mx-auto col col-11">
                         <div class="d-flex flex-wrap col col-12 ">
                             {% if trick.videos|length > 0 %}
                                 <div class="col col-10 col-md-8 mx-auto">
@@ -62,69 +102,67 @@
 
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                         <div>
-                            <div>
-                                <h2 class="pixelify-sans-font m-5">Ajouter un commentaire</h2>
-                                {{ form_start(form, {'attr': {'class': 'form-inline'}}) }}
-                                <div class="form-group w-100">
-                                    {{ form_widget(form.content, {'attr': {'class': 'form-control w-100', 'placeholder': 'Votre commentaire'}}) }}
-                                </div>
-                                <button type="submit" class="pixel mt-4"><p>Commenter</p></button>
-                                {{ form_end(form) }}
+                            <h2 class="pixelify-sans-font m-5">Ajouter un commentaire</h2>
+                            {{ form_start(form, {'attr': {'class': 'form-inline'}}) }}
+                            <div class="form-group col col-10 col-lg-8 mx-auto">
+                                {{ form_widget(form.content, {'attr': {'class': 'form-control w-100', 'placeholder': 'Votre commentaire'}}) }}
                             </div>
+                            <button type="submit" class="pixel mt-4 bg-transparent"><p>Commenter</p></button>
+                            {{ form_end(form) }}
                         </div>
                     {% else %}
-                        <p>Veuillez <a href="{{ path('app_login') }}">vous connecter</a> pour ajouter un
-                            commentaire.</p>
+                        <p>Veuillez <a href="{{ path('app_login') }}">vous connecter</a> pour ajouter un commentaire.
+                        </p>
                     {% endif %}
                 </div>
 
-
-
                 <div class="first-color-bg col col-12 p-0">
-                    <div class="col-md-6 mx-auto pt-3">
-                        <h2 class="pixelify-sans-font my-4">Commentaires</h2>
-                        {% if trick.comments|length > 0 %}
-                            <div class="list-group">
-                                {% for comment in comments %}
-                                    <div class="list-group-item list-group-item-action mb-3 rounded">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <div class="d-flex align-items-center">
-                                                {% if comment.authorId.profilePicture %}
-                                                    <img src="{{ asset('uploads/media/' ~ comment.authorId.profilePicture.filename) }}"
-                                                         alt="Photo de profil" class="rounded mr-3" width="50"
-                                                         height="50">
-                                                {% endif %}
-                                                <h5 class="m-2 second-color">{{ comment.authorId.userName }}</h5>
-                                            </div>
-                                            <small class="pixelify-sans-font">{{ comment.createdAt|date('d/m/Y H:i:s') }}</small>
-                                        </div>
-                                        <p class="mb-1">{{ comment.content }}</p>
-
-                                        {% if is_granted('IS_AUTHENTICATED_FULLY') and app.user == comment.authorId %}
-                                            <form action="{{ path('comment_delete', {'id': comment.id}) }}"
-                                                  method="post"
-                                                  class="mt-2">
-                                                <input type="hidden" name="_method" value="DELETE">
-                                                <input type="hidden" name="_token"
-                                                       value="{{ csrf_token('delete' ~ comment.id) }}">
-                                                <button type="submit" class="btn btn-danger btn-sm"><span
-                                                            class="pixelify-sans-font">Supprimer</span></button>
-                                            </form>
-                                        {% endif %}
-                                    </div>
-                                {% endfor %}
-                            </div>
+                    <div class="col-md-6 col-10 mx-auto pt-3">
+                        {% if comments|length > 0 %}
+                        <h2 class="pixelify-sans-font my-4 text-center">Commentaires :</h2>
                         {% else %}
-                            <p>Aucun commentaire pour le moment.</p>
+                        <h2 class="pixelify-sans-font my-4 text-center">Pas de commentaires pour le moment</h2>
                         {% endif %}
-                        <nav aria-label="Page navigation">
-                            <ul class="pagination justify-content-center">
-                                {{ knp_pagination_render(comments) }}
-                            </ul>
-                        </nav>
+                        <div id="comments-container">
+                            {% include 'trick/comment_card.html.twig' with {'comments': comments} %}
+                        </div>
+                        {% if has_more_comments %}
+                            <div class="text-center my-4">
+                                <button id="load-more-comments" class="pixel bg-transparent"
+                                        data-offset="{{ comments|length }}"
+                                        data-trick-id="{{ trick.id }}"><p>Voir plus</p>
+                                </button>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const button = document.getElementById('load-more-comments');
+            if (button) {
+                button.addEventListener('click', function () {
+                    const offset = button.getAttribute('data-offset');
+                    const trickId = button.getAttribute('data-trick-id');
+
+                    fetch(`/trick/${trickId}/comments/load-more?offset=${offset}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            document.getElementById('comments-container').insertAdjacentHTML('beforeend', data.content);
+                            button.setAttribute('data-offset', data.nextOffset);
+
+                            if (!data.hasMoreComments) {
+                                button.style.display = 'none';
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Erreur lors du chargement des commentaires:', error);
+                        });
+                });
+            }
+        });
+    </script>
 {% endblock %}

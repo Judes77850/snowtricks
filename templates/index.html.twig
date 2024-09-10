@@ -3,38 +3,32 @@
     <section class="home-intro mx-auto row">
         <div class="d-md-flex flex-column align-items-center justify-content-between col col-12 md-col-10 row mx-auto">
             <div class="col col-12 col-md-6 d-flex flex-column justify-content-around align-items-center h-75">
-                <p class="fs-4 text-center md-text-end mt-5">Bienvenue sur <span
-                            class="pixelify-sans-font">SnowTricks</span>, la source
-                    ultime pour explorer l'univers des
-                    <span class="pixelify-sans-font">figures de snowboard !</span>
-                    Que tu sois un rider passionné à la recherche de nouveaux défis ou un débutant curieux
-                    d'apprendre
-                    les bases,
-                    notre site est là pour te guider à travers les différentes figures et techniques de ce sport
-                    excitant.
+                <p class="fs-4 text-center md-text-end mt-5">
+                    Bienvenue sur <span class="pixelify-sans-font">SnowTricks</span>, la source ultime pour explorer l'univers des
+                    <span class="pixelify-sans-font">figures de snowboard !</span> Que tu sois un rider passionné à la recherche de nouveaux défis ou un débutant curieux d'apprendre les bases, notre site est là pour te guider à travers les différentes figures et techniques de ce sport excitant.
                 </p>
-                <span class="mt-5"><a href="#latest-figures"><img src="/assets/images/down-arrow.png"
-                                                                  class="scroll-down" alt="fleche pointant vers le bas"></a></span>
+                <span class="mt-5">
+                    <a href="#latest-figures">
+                        <img src="/assets/images/down-arrow.png" class="scroll-down" alt="fleche pointant vers le bas">
+                    </a>
+                </span>
             </div>
         </div>
     </section>
     <section class="first-color-bg h-100 w-100">
-        <h2 class="p-2 my-4 pixelify-sans-font second-color text-decoration-underline" id="latest-figures">Les dernières
-            figures</h2>
-        <div class="last-figures col col-10 mx-auto">
-            <div class="container d-flex mx-auto row">
+        <h2 class="p-2 my-4 pixelify-sans-font second-color text-decoration-underline" id="latest-figures">
+            Les dernières figures
+        </h2>
+        <div class="last-figures col col-12 mx-auto">
+            <div class="container d-flex mx-auto row" id="tricks-container">
                 {% for trick in tricks %}
-                    <a class="trick-card  col-xl-4 col-md-6 mb-4" href="{{ path('trick_show', {'slug': trick.slug}) }}">
-                        <div>
+                    <a class="trick-card col-12 col-xl-4 col-md-6 mb-4" href="{{ path('trick_show', {'slug': trick.slug}) }}">
+                        <div class="col col-12">
                             <div class="card">
-                                {% if trick.images is not empty and trick.images is not empty %}
-                                    <img src="{{ asset('uploads/media/' ~ trick.images.first.path) }}"
-                                         class="card-img-top object-fit-cover h-50"
-                                         alt="{{ trick.name }}">
+                                {% if trick.images is not empty %}
+                                    <img src="{{ asset('uploads/media/' ~ trick.images.first.path) }}" class="card-img-top object-fit-cover h-50" alt="{{ trick.name }}">
                                 {% else %}
-                                    <img src="assets/images/default-trick-image.jpg"
-                                         class="card-img-top object-fit-cover h-50"
-                                         alt="Image par défaut">
+                                    <img src="assets/images/default-trick-image.jpg" class="card-img-top object-fit-cover h-50" alt="Image par défaut">
                                 {% endif %}
                                 <div class="card-body">
                                     <h5 class="card-title pixelify-sans-font fs-2 text-center">{{ trick.name }}</h5>
@@ -42,37 +36,23 @@
                                 </div>
                                 {% if is_granted('IS_AUTHENTICATED_FULLY') and app.user == trick.authorId %}
                                     <div class="card-footer d-flex flex-wrap justify-content-around align-items-center">
-                                        <form action="{{ path('trick_edit', {'id': trick.id}) }}" method="post"
-                                              class="mb-0">
-                                            <input type="hidden" name="_token"
-                                                   value="{{ csrf_token('edit' ~ trick.id) }}">
+                                        <form action="{{ path('trick_edit', {'id': trick.id}) }}" method="post" class="mb-0">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('edit' ~ trick.id) }}">
                                             <button type="submit" class="btn">
-                                                <p class="d-flex justify-content-center align-items-center my-auto to-edit"><?xml version="1.0" encoding="UTF-8"?>
-                                                    <svg class="to-edit" width="24px" height="24px" viewBox="0 0 24 24"
-                                                         stroke-width="1.5"
-                                                         fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000">
-                                                        <path d="M14.3632 5.65156L15.8431 4.17157C16.6242 3.39052 17.8905 3.39052 18.6716 4.17157L20.0858 5.58579C20.8668 6.36683 20.8668 7.63316 20.0858 8.41421L18.6058 9.8942M14.3632 5.65156L4.74749 15.2672C4.41542 15.5993 4.21079 16.0376 4.16947 16.5054L3.92738 19.2459C3.87261 19.8659 4.39148 20.3848 5.0115 20.33L7.75191 20.0879C8.21972 20.0466 8.65806 19.8419 8.99013 19.5099L18.6058 9.8942M14.3632 5.65156L18.6058 9.8942"
-                                                              stroke="#000000" stroke-width="1.5" stroke-linecap="round"
-                                                              stroke-linejoin="round"></path>
+                                                <p class="d-flex justify-content-center align-items-center my-auto to-edit">
+                                                    <svg class="to-edit" width="24px" height="24px" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000">
+                                                        <path d="M14.3632 5.65156L15.8431 4.17157C16.6242 3.39052 17.8905 3.39052 18.6716 4.17157L20.0858 5.58579C20.8668 6.36683 20.8668 7.63316 20.0858 8.41421L18.6058 9.8942M14.3632 5.65156L4.74749 15.2672C4.41542 15.5993 4.21079 16.0376 4.16947 16.5054L3.92738 19.2459C3.87261 19.8659 4.39148 20.3848 5.0115 20.33L7.75191 20.0879C8.21972 20.0466 8.65806 19.8419 8.99013 19.5099L18.6058 9.8942M14.3632 5.65156L18.6058 9.8942" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                                                     </svg>
                                                 </p>
                                             </button>
                                         </form>
-                                        <form action="{{ path('trick_delete', {'id': trick.id}) }}" method="post"
-                                              class="mb-0">
-                                            <input type="hidden" name="_token"
-                                                   value="{{ csrf_token('delete' ~ trick.id) }}">
+                                        <form action="{{ path('trick_delete', {'id': trick.id}) }}" method="post" class="mb-0">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ trick.id) }}">
                                             <button type="submit" class="btn" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette figure ?')">
-                                                <p class="d-flex justify-content-center align-items-center my-auto"><?xml version="1.0" encoding="UTF-8"?>
-                                                    <svg class="to-delete" width="24px" height="24px" viewBox="0 0 24 24"
-                                                         stroke-width="1.5"
-                                                         fill="none" xmlns="http://www.w3.org/2000/svg" color="#111111">
-                                                        <path d="M20 9L18.005 20.3463C17.8369 21.3026 17.0062 22 16.0353 22H7.96474C6.99379 22 6.1631 21.3026 5.99496 20.3463L4 9"
-                                                              stroke="#000000" stroke-width="1.5" stroke-linecap="round"
-                                                              stroke-linejoin="round"></path>
-                                                        <path d="M21 6L15.375 6M3 6L8.625 6M8.625 6V4C8.625 2.89543 9.52043 2 10.625 2H13.375C14.4796 2 15.375 2.89543 15.375 4V6M8.625 6L15.375 6"
-                                                              stroke="#000000" stroke-width="1.5" stroke-linecap="round"
-                                                              stroke-linejoin="round"></path>
+                                                <p class="d-flex justify-content-center align-items-center my-auto">
+                                                    <svg class="to-delete" width="24px" height="24px" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="#111111">
+                                                        <path d="M20 9L18.005 20.3463C17.8369 21.3026 17.0062 22 16.0353 22H7.96474C6.99379 22 6.1631 21.3026 5.99496 20.3463L4 9" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                        <path d="M21 6L15.375 6M3 6L8.625 6M8.625 6V4C8.625 2.89543 9.52043 2 10.625 2H13.375C14.4796 2 15.375 2.89543 15.375 4V6M8.625 6L15.375 6" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                                                     </svg>
                                                 </p>
                                             </button>
@@ -83,12 +63,45 @@
                         </div>
                     </a>
                 {% endfor %}
-                <nav aria-label="Page navigation">
-                    <ul class="pagination justify-content-center">
-                        {{ knp_pagination_render(tricks) }}
-                    </ul>
-                </nav>
             </div>
+            {% if hasMoreTricks %}
+                <div class="text-center my-4">
+                    <button id="load-more" class="pixel bg-transparent" data-offset="{{ offset }}"><p>Voir plus</p></button>
+                </div>
+            {% endif %}
         </div>
     </section>
 </main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let loadMoreButton = document.getElementById('load-more');
+        if (loadMoreButton) {
+            loadMoreButton.addEventListener('click', function () {
+                let offset = this.getAttribute('data-offset');
+
+                fetch('{{ path('tricks_load_more') }}?offset=' + offset)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.error) {
+                            console.error('Error:', data.error);
+                            return;
+                        }
+
+                        document.getElementById('tricks-container').insertAdjacentHTML('beforeend', data.content);
+                        this.setAttribute('data-offset', data.nextOffset);
+
+                        if (!data.hasMoreTricks) {
+                            this.style.display = 'none';
+                        }
+                    })
+                    .catch(error => console.error('Fetch error:', error));
+            });
+        }
+    });
+</script>
