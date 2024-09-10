@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\ImageRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: ImageRepository::class)]
 class Image
@@ -24,7 +26,15 @@ class Image
 	#[ORM\Column(type: 'boolean')]
 	private bool $isMain = false;
 
+	#[ORM\OneToMany(targetEntity: Tricks::class, mappedBy: 'mainImage')]
+	private Collection $tricks;
+
 	private ?File $file = null;
+
+	public function __construct()
+	{
+		$this->tricks = new ArrayCollection();
+	}
 
     public function getId(): ?int
     {
@@ -66,6 +76,32 @@ class Image
 
         return $this;
     }
+
+	public function getTricks(): Collection
+	{
+		return $this->tricks;
+	}
+
+	public function addTrick(Tricks $trick): static
+	{
+		if (!$this->tricks->contains($trick)) {
+			$this->tricks->add($trick);
+			$trick->setMainImage($this);
+		}
+
+		return $this;
+	}
+
+	public function removeTrick(Tricks $trick): static
+	{
+		if ($this->tricks->removeElement($trick)) {
+			if ($trick->getMainImage() === $this) {
+				$trick->setMainImage(null);
+			}
+		}
+
+		return $this;
+	}
 
 	/**
 	 * @return File|null
