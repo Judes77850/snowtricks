@@ -50,8 +50,9 @@ class Tricks
 	private Collection $images;
 
 	#[ORM\ManyToOne(targetEntity: Image::class, inversedBy: 'tricks')]
-	#[ORM\JoinColumn(nullable: true)]
+	#[ORM\JoinColumn(nullable: true, onDelete: "SET NULL")]
 	private ?Image $mainImage = null;
+
 
 	#[ORM\OneToMany(targetEntity: Video::class, mappedBy: 'trick' , cascade: ['persist', 'remove'], orphanRemoval: true)]
 	private Collection $videos;

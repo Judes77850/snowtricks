@@ -10,21 +10,23 @@
         <div class="row">
             <div class="col col-12 mx-auto">
                 {% if trick.mainImage %}
-                <div class="trick-background p-0 d-flex justify-content-end align-items-end"
+                <div class="trick-background d-flex align-items-start justify-content-center z-2"
                      style="background-image: url('{{ asset('uploads/media/' ~ trick.mainImage.path) }}');">
+                    <h1 class="z-1 pixelify-sans-font bg-white mt-5 fs-1 p-3 text-decoration-underline">{{ trick.name }}</h1>
                     {% else %}
                     <div class="trick-background">
+                        <h1 class="z-1 pixelify-sans-font bg-white mt-5 fs-1 text-decoration-underline">{{ trick.name }}</h1>
                         {% endif %}
-                        <div class="trick-info col col-11 col-lg-8 d-flex justify-content-around align-items-center mx-auto">
-                            <div class="col col-12">
-                                <h1 class="pixelify-sans-font my-3 text-center text-decoration-underline">{{ trick.name }}</h1>
-                                <p class="p-4 my-4 text-center fs-4">{{ trick.description }}</p>
-                                <div class="d-flex justify-content-around p-0 m-0">
-                                    <p class="text-center"><strong>Créé le :</strong> {{ trick.createdAt|date('d/m/Y H:i:s') }}</p>
-                                    <p class="text-center"><strong>Catégorie :</strong> {{ trick.categoryId.name }}</p>
-                                    <p class="text-center"><strong>Auteur :</strong> {{ trick.authorId.userName }}</p>
-                                </div>
-                            </div>
+                    </div>
+                </div>
+                <div class="trick-info col col-11 col-lg-8 d-flex justify-content-around align-items-center mx-auto">
+                    <div class="col col-12">
+                        <p class="p-4 my-4 text-center fs-4">{{ trick.description }}</p>
+                        <div class="d-flex flex-column justify-content-between p-0 m-0">
+                            <p class="text-center pixelify-sans-font"><span> le </span> {{ trick.createdAt|date('d/m/y à H:i') }}<span> par </span> {{ trick.authorId.userName }}</p>
+
+                            <p class="text-center"><span class="pixelify-sans-font">Catégorie :</span> {{ trick.categoryId.name }}</p>
+
                         </div>
                     </div>
                 </div>
@@ -35,7 +37,6 @@
                             <input type="hidden" name="_token" value="{{ csrf_token('edit' ~ trick.id) }}">
                             <button type="submit" class="btn">
                                 <p class="d-flex justify-content-center align-items-center my-auto to-edit">
-                                    <!-- SVG Icon for Edit -->
                                     <svg class="to-edit" width="24px" height="24px" viewBox="0 0 24 24"
                                          stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg"
                                          color="#000000">
@@ -51,7 +52,6 @@
                             <button type="submit" class="btn"
                                     onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette figure ?')">
                                 <p class="d-flex justify-content-center align-items-center my-auto to-delete">
-                                    <!-- SVG Icon for Delete -->
                                     <svg class="to-delete" width="24px" height="24px" viewBox="0 0 24 24"
                                          stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg"
                                          color="#111111">
@@ -111,7 +111,7 @@
                             {{ form_end(form) }}
                         </div>
                     {% else %}
-                        <p>Veuillez <a href="{{ path('app_login') }}">vous connecter</a> pour ajouter un commentaire.
+                        <p class="mt-3">Veuillez <a class="pixelify-sans-font text-decoration-underline second-color" href="{{ path('app_login') }}">vous connecter</a> pour ajouter un commentaire.
                         </p>
                     {% endif %}
                 </div>
@@ -119,9 +119,9 @@
                 <div class="first-color-bg col col-12 p-0">
                     <div class="col-md-6 col-10 mx-auto pt-3">
                         {% if comments|length > 0 %}
-                        <h2 class="pixelify-sans-font my-4 text-center">Commentaires :</h2>
+                            <h2 class="pixelify-sans-font my-4 text-center">Commentaires :</h2>
                         {% else %}
-                        <h2 class="pixelify-sans-font my-4 text-center">Pas de commentaires pour le moment</h2>
+                            <h2 class="pixelify-sans-font my-4 text-center">Pas de commentaires pour le moment</h2>
                         {% endif %}
                         <div id="comments-container">
                             {% include 'trick/comment_card.html.twig' with {'comments': comments} %}

@@ -51,14 +51,14 @@ class TrickController extends AbstractController
 			$mainImageSet = false;
 			foreach ($trick->getImages() as $image) {
 				if ($image->getIsMain()) {
-					$trick->setIsMain($image);
+					$trick->setMainImage($image);
 					$mainImageSet = true;
 					break;
 				}
 			}
 
 			if (!$mainImageSet && $trick->getImages()->count() > 0) {
-				$trick->setIsMain($trick->getImages()->first());
+				$trick->setMainImage($trick->getImages()->first());
 			}
 
 			$trick->setSlug($slugger->slug($trick->getName())->lower());
@@ -77,17 +77,14 @@ class TrickController extends AbstractController
 	}
 
 	#[Route('/trick/{slug}', name: 'trick_show', methods: ['GET', 'POST'])]
-	#[IsGranted('IS_AUTHENTICATED_FULLY')]
 	public function show(string $slug, Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
 	{
-		// Récupére le trick par son slug
 		$trick = $entityManager->getRepository(Tricks::class)->findOneBy(['slug' => $slug]);
 
 		if (!$trick) {
 			throw $this->createNotFoundException('Trick not found');
 		}
 
-		// Crée et traite le formulaire de commentaire
 		$comment = new Comment();
 		$form = $this->createForm(CommentType::class, $comment);
 		$form->handleRequest($request);
@@ -103,7 +100,6 @@ class TrickController extends AbstractController
 			return $this->redirectToRoute('trick_show', ['slug' => $trick->getSlug()]);
 		}
 
-		// Récupére les commentaires associés au trick
 		$queryBuilder = $entityManager->getRepository(Comment::class)->createQueryBuilder('c')
 			->where('c.trickId = :trickId')
 			->setParameter('trickId', $trick->getId())
@@ -112,7 +108,7 @@ class TrickController extends AbstractController
 		$pagination = $paginator->paginate(
 			$queryBuilder,
 			$request->query->getInt('page', 1),
-			9 // Nombre de commentaires par page
+			9
 		);
 
 		$totalItemCount = $pagination->getTotalItemCount();
@@ -125,7 +121,7 @@ class TrickController extends AbstractController
 			'trick' => $trick,
 			'comments' => $pagination,
 			'form' => $form->createView(),
-			'has_more_comments' => $hasMoreComments, // Assurez-vous que cette variable est passée au template
+			'has_more_comments' => $hasMoreComments,
 		]);
 	}
 

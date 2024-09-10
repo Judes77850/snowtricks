@@ -11,47 +11,39 @@ use Doctrine\Common\Collections\Collection;
 #[ORM\Entity(repositoryClass: ImageRepository::class)]
 class Image
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+	#[ORM\Id]
+	#[ORM\GeneratedValue]
+	#[ORM\Column]
+	private ?int $id = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $path = null;
+	#[ORM\Column(length: 255, nullable: true)]
+	private ?string $path = null;
 
-    #[ORM\ManyToOne(inversedBy: 'images')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Tricks $trick = null;
+	#[ORM\ManyToOne(targetEntity: Tricks::class, inversedBy: 'images')]
+	#[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
+	private ?Tricks $trick = null;
 
 	#[ORM\Column(type: 'boolean')]
 	private bool $isMain = false;
 
-	#[ORM\OneToMany(targetEntity: Tricks::class, mappedBy: 'mainImage')]
-	private Collection $tricks;
-
 	private ?File $file = null;
 
-	public function __construct()
+	public function getId(): ?int
 	{
-		$this->tricks = new ArrayCollection();
+		return $this->id;
 	}
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+	public function getPath(): ?string
+	{
+		return $this->path;
+	}
 
-    public function getPath(): ?string
-    {
-        return $this->path;
-    }
+	public function setPath(?string $path): static
+	{
+		$this->path = $path;
 
-    public function setPath(?string $path): static
-    {
-        $this->path = $path;
-
-        return $this;
-    }
+		return $this;
+	}
 
 	public function getIsMain(): bool
 	{
@@ -65,40 +57,14 @@ class Image
 		return $this;
 	}
 
-    public function getTrick(): ?Tricks
-    {
-        return $this->trick;
-    }
-
-    public function setTrick(?Tricks $trick): static
-    {
-        $this->trick = $trick;
-
-        return $this;
-    }
-
-	public function getTricks(): Collection
+	public function getTrick(): ?Tricks
 	{
-		return $this->tricks;
+		return $this->trick;
 	}
 
-	public function addTrick(Tricks $trick): static
+	public function setTrick(?Tricks $trick): static
 	{
-		if (!$this->tricks->contains($trick)) {
-			$this->tricks->add($trick);
-			$trick->setMainImage($this);
-		}
-
-		return $this;
-	}
-
-	public function removeTrick(Tricks $trick): static
-	{
-		if ($this->tricks->removeElement($trick)) {
-			if ($trick->getMainImage() === $this) {
-				$trick->setMainImage(null);
-			}
-		}
+		$this->trick = $trick;
 
 		return $this;
 	}
@@ -119,3 +85,4 @@ class Image
 		$this->file = $file;
 	}
 }
+
