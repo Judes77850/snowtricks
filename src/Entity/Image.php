@@ -23,6 +23,9 @@ class Image
 	#[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
 	private ?Tricks $trick = null;
 
+	#[ORM\OneToMany(targetEntity: Tricks::class, mappedBy: 'mainImage')]
+	private Collection $tricks;
+
 	#[ORM\Column(type: 'boolean')]
 	private bool $isMain = false;
 
