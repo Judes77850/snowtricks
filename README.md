@@ -2,6 +2,8 @@
 
 Bienvenue sur **SnowTricks**, un site communautaire dédié aux passionnés de snowboard ! Ce projet a été développé avec le framework Symfony et permet aux utilisateurs de répertorier, partager et discuter des figures (tricks) de snowboard.
 
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/23b27b977e44431ca7daaf41509d9b56)](https://app.codacy.com/gh/Judes77850/snowtricks/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+
 ## Fonctionnalités
 
 - **Inscription et Connexion** : Les utilisateurs peuvent s'inscrire et se connecter pour accéder aux fonctionnalités du site.
