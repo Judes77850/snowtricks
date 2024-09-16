@@ -12,128 +12,136 @@
                 {% if trick.mainImage %}
                 <div class="trick-background d-flex align-items-start justify-content-center z-2"
                      style="background-image: url('{{ asset('uploads/media/' ~ trick.mainImage.path) }}');">
-                    <h1 class="z-1 pixelify-sans-font bg-white mt-5 fs-1 p-3 text-decoration-underline">{{ trick.name }}</h1>
                     {% else %}
-                    <div class="trick-background">
-                        <h1 class="z-1 pixelify-sans-font bg-white mt-5 fs-1 text-decoration-underline">{{ trick.name }}</h1>
+                    <div class="trick-background d-flex align-items-start justify-content-center z-2"
+                         style="background-image: url('{{ asset('../assets/images/default-trick-image.jpg') }}');">
                         {% endif %}
+                        <h1 class="z-1 pixelify-sans-font bg-white mt-5 fs-1 p-3 text-decoration-underline">{{ trick.name }}</h1>
                     </div>
-                </div>
-                <div class="trick-info col col-11 col-lg-8 d-flex justify-content-around align-items-center mx-auto">
-                    <div class="col col-12">
-                        <p class="p-4 my-4 text-center fs-4">{{ trick.description }}</p>
-                        <div class="d-flex flex-column justify-content-between p-0 m-0">
-                            <p class="text-center pixelify-sans-font"><span> le </span> {{ trick.createdAt|date('d/m/y à H:i') }}<span> par </span> {{ trick.authorId.userName }}</p>
 
-                            <p class="text-center"><span class="pixelify-sans-font">Catégorie :</span> {{ trick.categoryId.name }}</p>
+                    <div class="trick-info col col-11 col-lg-8 d-flex justify-content-around align-items-center mx-auto">
+                        <div class="col col-12">
+                            <p class="p-4 my-4 text-center fs-4">{{ trick.description }}</p>
+                            <div class="d-flex flex-column justify-content-between p-0 m-0">
+                                <p class="text-center pixelify-sans-font">
+                                    <span> le </span> {{ trick.createdAt|date('d/m/y à H:i') }}
+                                    <span> par </span> {{ trick.authorId.userName }}</p>
 
-                        </div>
-                    </div>
-                </div>
-
-                {% if is_granted('IS_AUTHENTICATED_FULLY') and app.user == trick.authorId %}
-                    <div class="bg-transparent mx-auto d-flex justify-content-end">
-                        <form action="{{ path('trick_edit', {'id': trick.id}) }}" method="post" class="mb-0">
-                            <input type="hidden" name="_token" value="{{ csrf_token('edit' ~ trick.id) }}">
-                            <button type="submit" class="btn">
-                                <p class="d-flex justify-content-center align-items-center my-auto to-edit">
-                                    <svg class="to-edit" width="24px" height="24px" viewBox="0 0 24 24"
-                                         stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                         color="#000000">
-                                        <path d="M14.3632 5.65156L15.8431 4.17157C16.6242 3.39052 17.8905 3.39052 18.6716 4.17157L20.0858 5.58579C20.8668 6.36683 20.8668 7.63316 20.0858 8.41421L18.6058 9.8942M14.3632 5.65156L4.74749 15.2672C4.41542 15.5993 4.21079 16.0376 4.16947 16.5054L3.92738 19.2459C3.87261 19.8659 4.39148 20.3848 5.0115 20.33L7.75191 20.0879C8.21972 20.0466 8.65806 19.8419 8.99013 19.5099L18.6058 9.8942M14.3632 5.65156L18.6058 9.8942"
-                                              stroke="#000000" stroke-width="1.5" stroke-linecap="round"
-                                              stroke-linejoin="round"></path>
-                                    </svg>
+                                <p class="text-center"><span
+                                            class="pixelify-sans-font">Catégorie :</span> {{ trick.categoryId.name }}
                                 </p>
-                            </button>
-                        </form>
-                        <form action="{{ path('trick_delete', {'id': trick.id}) }}" method="post" class="mb-0">
-                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ trick.id) }}">
-                            <button type="submit" class="btn"
-                                    onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette figure ?')">
-                                <p class="d-flex justify-content-center align-items-center my-auto to-delete">
-                                    <svg class="to-delete" width="24px" height="24px" viewBox="0 0 24 24"
-                                         stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                         color="#111111">
-                                        <path d="M20 9L18.005 20.3463C17.8369 21.3026 17.0062 22 16.0353 22H7.96474C6.99379 22 6.1631 21.3026 5.99496 20.3463L4 9"
-                                              stroke="#000000" stroke-width="1.5" stroke-linecap="round"
-                                              stroke-linejoin="round"></path>
-                                        <path d="M21 6L15.375 6M3 6L8.625 6M8.625 6V4C8.625 2.89543 9.52043 2 10.625 2H13.375C14.4796 2 15.375 2.89543 15.375 4V6M8.625 6L15.375 6"
-                                              stroke="#000000" stroke-width="1.5" stroke-linecap="round"
-                                              stroke-linejoin="round"></path>
-                                    </svg>
-                                </p>
-                            </button>
-                        </form>
-                    </div>
-                {% endif %}
 
-                <div class="container w-100 col col-12">
-                    <h2 class="pixelify-sans-font fs-1 text-decoration-underline my-5">Médias</h2>
-                    <div class="mx-auto col col-11">
-                        <div class="d-flex flex-wrap col col-12 ">
-                            {% if trick.videos|length > 0 %}
-                                <div class="col col-10 col-md-8 mx-auto">
-                                    {% for video in trick.videos %}
-                                        <div class="col-md-10 m-3 mx-auto">
-                                            <div class="ratio ratio-16x9">
-                                                <iframe class="rounded"
-                                                        src="https://www.youtube.com/embed/{{ video.videoId }}"
-                                                        frameborder="0" allowfullscreen></iframe>
-                                            </div>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            {% else %}
-                                <p>Aucune vidéo disponible pour ce trick.</p>
-                            {% endif %}
-                            {% if trick.images|length > 0 %}
-                                <div class="col col-10 col-md-4 mx-auto">
-                                    {% for image in trick.images %}
-                                        <img src="{{ asset('uploads/media/' ~ image.path) }}" alt="{{ trick.name }}"
-                                             class="d-block w-100 rounded m-3 mx-auto">
-                                    {% endfor %}
-                                </div>
-                            {% else %}
-                                <p>Aucune image disponible pour ce trick.</p>
-                            {% endif %}
-                        </div>
-                    </div>
-
-                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                        <div>
-                            <h2 class="pixelify-sans-font m-5">Ajouter un commentaire</h2>
-                            {{ form_start(form, {'attr': {'class': 'form-inline'}}) }}
-                            <div class="form-group col col-10 col-lg-8 mx-auto">
-                                {{ form_widget(form.content, {'attr': {'class': 'form-control w-100', 'placeholder': 'Votre commentaire'}}) }}
                             </div>
-                            <button type="submit" class="pixel mt-4 bg-transparent"><p>Commenter</p></button>
-                            {{ form_end(form) }}
                         </div>
-                    {% else %}
-                        <p class="mt-3">Veuillez <a class="pixelify-sans-font text-decoration-underline second-color" href="{{ path('app_login') }}">vous connecter</a> pour ajouter un commentaire.
-                        </p>
-                    {% endif %}
-                </div>
+                    </div>
 
-                <div class="first-color-bg col col-12 p-0">
-                    <div class="col-md-6 col-10 mx-auto pt-3">
-                        {% if comments|length > 0 %}
-                            <h2 class="pixelify-sans-font my-4 text-center">Commentaires :</h2>
-                        {% else %}
-                            <h2 class="pixelify-sans-font my-4 text-center">Pas de commentaires pour le moment</h2>
-                        {% endif %}
-                        <div id="comments-container">
-                            {% include 'trick/comment_card.html.twig' with {'comments': comments} %}
-                        </div>
-                        {% if has_more_comments %}
-                            <div class="text-center my-4">
-                                <button id="load-more-comments" class="pixel bg-transparent"
-                                        data-offset="{{ comments|length }}"
-                                        data-trick-id="{{ trick.id }}"><p>Voir plus</p>
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') and app.user == trick.authorId %}
+                        <div class="bg-transparent mx-auto d-flex justify-content-end">
+                            <form action="{{ path('trick_edit', {'id': trick.id}) }}" method="post" class="mb-0">
+                                <input type="hidden" name="_token" value="{{ csrf_token('edit' ~ trick.id) }}">
+                                <button type="submit" class="btn">
+                                    <p class="d-flex justify-content-center align-items-center my-auto to-edit">
+                                        <svg class="to-edit" width="24px" height="24px" viewBox="0 0 24 24"
+                                             stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                             color="#000000">
+                                            <path d="M14.3632 5.65156L15.8431 4.17157C16.6242 3.39052 17.8905 3.39052 18.6716 4.17157L20.0858 5.58579C20.8668 6.36683 20.8668 7.63316 20.0858 8.41421L18.6058 9.8942M14.3632 5.65156L4.74749 15.2672C4.41542 15.5993 4.21079 16.0376 4.16947 16.5054L3.92738 19.2459C3.87261 19.8659 4.39148 20.3848 5.0115 20.33L7.75191 20.0879C8.21972 20.0466 8.65806 19.8419 8.99013 19.5099L18.6058 9.8942M14.3632 5.65156L18.6058 9.8942"
+                                                  stroke="#000000" stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                        </svg>
+                                    </p>
                                 </button>
+                            </form>
+                            <form action="{{ path('trick_delete', {'id': trick.id}) }}" method="post" class="mb-0">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ trick.id) }}">
+                                <button type="submit" class="btn"
+                                        onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette figure ?')">
+                                    <p class="d-flex justify-content-center align-items-center my-auto to-delete">
+                                        <svg class="to-delete" width="24px" height="24px" viewBox="0 0 24 24"
+                                             stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                             color="#111111">
+                                            <path d="M20 9L18.005 20.3463C17.8369 21.3026 17.0062 22 16.0353 22H7.96474C6.99379 22 6.1631 21.3026 5.99496 20.3463L4 9"
+                                                  stroke="#000000" stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                            <path d="M21 6L15.375 6M3 6L8.625 6M8.625 6V4C8.625 2.89543 9.52043 2 10.625 2H13.375C14.4796 2 15.375 2.89543 15.375 4V6M8.625 6L15.375 6"
+                                                  stroke="#000000" stroke-width="1.5" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                        </svg>
+                                    </p>
+                                </button>
+                            </form>
+                        </div>
+                    {% endif %}
+
+                    <div class="container w-100 col col-12">
+                        <h2 class="pixelify-sans-font fs-1 text-decoration-underline my-5">Médias</h2>
+                        <div class="mx-auto col col-11">
+                            <div class="d-flex flex-wrap col col-12 ">
+                                {% if trick.videos|length > 0 %}
+                                    <div class="col col-10 col-md-8 mx-auto">
+                                        {% for video in trick.videos %}
+                                            <div class="col-md-10 m-3 mx-auto">
+                                                <div class="ratio ratio-16x9">
+                                                    <iframe class="rounded"
+                                                            src="https://www.youtube.com/embed/{{ video.videoId }}"
+                                                            frameborder="0" allowfullscreen></iframe>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    <p>Aucune vidéo disponible pour ce trick.</p>
+                                {% endif %}
+                                {% if trick.images|length > 0 %}
+                                    <div class="col col-10 col-md-4 mx-auto">
+                                        {% for image in trick.images %}
+                                            <img src="{{ asset('uploads/media/' ~ image.path) }}" alt="{{ trick.name }}"
+                                                 class="d-block w-100 rounded m-3 mx-auto">
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    <p>Aucune image disponible pour ce trick.</p>
+                                {% endif %}
                             </div>
+                        </div>
+
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                            <div>
+                                <h2 class="pixelify-sans-font m-5">Ajouter un commentaire</h2>
+                                {{ form_start(form, {'attr': {'class': 'form-inline'}}) }}
+                                <div class="form-group col col-10 col-lg-8 mx-auto">
+                                    {{ form_widget(form.content, {'attr': {'class': 'form-control w-100', 'placeholder': 'Votre commentaire'}}) }}
+                                </div>
+                                <button type="submit" class="pixel mt-4 bg-transparent"><p>Commenter</p></button>
+                                {{ form_end(form) }}
+                            </div>
+                        {% else %}
+                            <p class="mt-3">Veuillez <a
+                                        class="pixelify-sans-font text-decoration-underline second-color"
+                                        href="{{ path('app_login') }}">vous connecter</a> pour ajouter un
+                                commentaire.
+                            </p>
                         {% endif %}
+                    </div>
+
+                    <div class="first-color-bg col col-12 p-0">
+                        <div class="col-md-6 col-10 mx-auto pt-3">
+                            {% if comments|length > 0 %}
+                                <h2 class="pixelify-sans-font my-4 text-center">Commentaires :</h2>
+                            {% else %}
+                                <h2 class="pixelify-sans-font my-4 text-center">Pas de commentaires pour le moment</h2>
+                            {% endif %}
+                            <div id="comments-container">
+                                {% include 'trick/comment_card.html.twig' with {'comments': comments} %}
+                            </div>
+                            {% if has_more_comments %}
+                                <div class="text-center my-4">
+                                    <button id="load-more-comments" class="pixel bg-transparent"
+                                            data-offset="{{ comments|length }}"
+                                            data-trick-id="{{ trick.id }}"><p>Voir plus</p>
+                                    </button>
+                                </div>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
