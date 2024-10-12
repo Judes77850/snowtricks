@@ -43,9 +43,6 @@ class Tricks
 	#[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'trickId', cascade: ['remove'])]
 	private Collection $comments;
 
-	#[ORM\OneToMany(targetEntity: Media::class, mappedBy: 'trick', cascade: ['persist', 'remove'], orphanRemoval: true)]
-	private Collection $media;
-
 	#[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'trick', cascade: ['persist', 'remove'], orphanRemoval: true)]
 	private Collection $images;
 
@@ -60,7 +57,6 @@ class Tricks
 	public function __construct()
 	{
 		$this->comments = new ArrayCollection();
-		$this->media = new ArrayCollection();
 		$this->createdAt = new \DateTimeImmutable();
 		$this->images = new ArrayCollection();
 		$this->videos = new ArrayCollection();
@@ -190,34 +186,7 @@ class Tricks
 		return $this;
 	}
 
-	/**
-	 * @return Collection<int, Media>
-	 */
-	public function getMedia(): Collection
-	{
-		return $this->media;
-	}
 
-	public function addMedium(Media $medium): static
-	{
-		if (!$this->media->contains($medium)) {
-			$this->media->add($medium);
-			$medium->setTrick($this);
-		}
-
-		return $this;
-	}
-
-	public function removeMedium(Media $medium): static
-	{
-		if ($this->media->removeElement($medium)) {
-			if ($medium->getTrick() === $this) {
-				$medium->setTrick(null);
-			}
-		}
-
-		return $this;
-	}
 
 	/**
 	 * @return Collection<int, Image>

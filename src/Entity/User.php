@@ -33,8 +33,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	#[ORM\Column(length: 255)]
 	private ?string $userName = null;
 
-	#[ORM\OneToMany(targetEntity: Media::class, mappedBy: 'userId')]
-	private Collection $media;
 
 	#[ORM\OneToMany(targetEntity: Tricks::class, mappedBy: 'authorId')]
 	private Collection $tricks;
@@ -56,7 +54,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 	public function __construct()
 	{
-		$this->media = new ArrayCollection();
 		$this->tricks = new ArrayCollection();
 		$this->createdAt = new \DateTimeImmutable();
 		$this->comments = new ArrayCollection();
@@ -119,37 +116,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	public function __toString(): string
 	{
 		return $this->getUsername();
-	}
-
-
-	/**
-	 * @return Collection<int, Media>
-	 */
-	public function getMedia(): Collection
-	{
-		return $this->media;
-	}
-
-	public function addMedium(Media $medium): static
-	{
-		if (!$this->media->contains($medium)) {
-			$this->media->add($medium);
-			$medium->setUserId($this);
-		}
-
-		return $this;
-	}
-
-	public function removeMedium(Media $medium): static
-	{
-		if ($this->media->removeElement($medium)) {
-			// set the owning side to null (unless already changed)
-			if ($medium->getUserId() === $this) {
-				$medium->setUserId(null);
-			}
-		}
-
-		return $this;
 	}
 
 

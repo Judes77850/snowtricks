@@ -6,7 +6,8 @@ use App\Entity\User;
 use App\Entity\Categories;
 use App\Entity\Tricks;
 use App\Entity\Comment;
-use App\Entity\Media;
+use App\Entity\Image;
+use App\Entity\Video;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -69,14 +70,13 @@ class GenerateFixtures extends Fixture
 		$mediaData = json_decode(file_get_contents(__DIR__ . '/mediasData.json'), true);
 
 		foreach ($mediaData as $mediaItem) {
-			$media = $this->createMedia(
-				$tricks,
-				$users,
-				$categories,
-				$mediaItem['path'],
-				$mediaItem['is_video']
-			);
-			$manager->persist($media);
+			if ($mediaItem['is_video']) {
+				$video = $this->createVideo($tricks, $mediaItem['path']);
+				$manager->persist($video);
+			} else {
+				$image = $this->createImage($tricks, $mediaItem['path']);
+				$manager->persist($image);
+			}
 		}
 		$manager->flush();
 	}
@@ -124,16 +124,38 @@ class GenerateFixtures extends Fixture
 		return $comment;
 	}
 
-	private function createMedia(array $tricks, array $users, array $categories, string $path, bool $isVideo): Media
+	private function createImage(array $tricks, string $path): Image
 	{
-		$media = new Media();
-		$media->setTrick($tricks[array_rand($tricks)])
-			->setUserId($users[array_rand($users)])
-			->setCategoryId($categories[array_rand($categories)])
-			->setPath($path)
-			->setIsVideo($isVideo);
+		$image = new Image();
+		$image->setTrick($tricks[array_rand($tricks)])
+			->setPath($path);
 
-		return $media;
+		return $image;
 	}
 
+
+	private function createVideo(array $tricks, string $url): Video
+	{
+		if (empty($url)) {
+			throw new \Exception("L'URL de la vidéo ne peut pas être vide.");
+		}
+
+		$videoId = $this->extractYouTubeVideoId($url);
+		if (!$videoId) {
+			throw new \Exception("Impossible d'extraire l'ID de la vidéo YouTube.");
+		}
+
+		$video = new Video();
+		$video->setTrick($tricks[array_rand($tricks)])
+			->setUrl($url)
+			->setVideoId($videoId);
+
+		return $video;
+	}
+
+	private function extractYouTubeVideoId(string $url): ?string
+	{
+		preg_match('/(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/', $url, $matches);
+		return $matches[1] ?? null;
+	}
 }

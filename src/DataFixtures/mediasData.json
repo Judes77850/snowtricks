@@ -1,85 +1,49 @@
 [
   {
-    "trick_id": 1,
-    "user_id": 1,
-    "category_id": 1,
     "path": "public/assets/uploads/image1.jpg",
     "is_video": 0
   },
   {
-    "trick_id": 2,
-    "user_id": 2,
-    "category_id": 1,
-    "path": "public/assets/uploads/video1.mp4",
+    "path": "https://www.youtube.com/watch?v=example1",
     "is_video": 1
   },
   {
-    "trick_id": 3,
-    "user_id": 3,
-    "category_id": 2,
     "path": "public/assets/uploads/image2.jpg",
     "is_video": 0
   },
   {
-    "trick_id": 4,
-    "user_id": 4,
-    "category_id": 2,
-    "path": "public/assets/uploads/video2.mp4",
+    "path": "https://www.youtube.com/watch?v=example2",
     "is_video": 1
   },
   {
-    "trick_id": 5,
-    "user_id": 5,
-    "category_id": 3,
     "path": "public/assets/uploads/image3.jpg",
     "is_video": 0
   },
   {
-    "trick_id": 6,
-    "user_id": 6,
-    "category_id": 3,
-    "path": "public/assets/uploads/video3.mp4",
+    "path": "https://www.youtube.com/watch?v=example3",
     "is_video": 1
   },
   {
-    "trick_id": 7,
-    "user_id": 7,
-    "category_id": 1,
     "path": "public/assets/uploads/image4.jpg",
     "is_video": 0
   },
   {
-    "trick_id": 8,
-    "user_id": 8,
-    "category_id": 2,
     "path": "public/assets/uploads/image5.jpg",
     "is_video": 0
   },
   {
-    "trick_id": 9,
-    "user_id": 9,
-    "category_id": 3,
-    "path": "public/assets/uploads/video4.mp4",
+    "path": "https://www.youtube.com/watch?v=example4",
     "is_video": 1
   },
   {
-    "trick_id": 10,
-    "user_id": 10,
-    "category_id": 1,
-    "path": "public/assets/uploads/video5.mp4",
+    "path": "https://www.youtube.com/watch?v=example5",
     "is_video": 1
   },
   {
-    "trick_id": 11,
-    "user_id": 11,
-    "category_id": 2,
     "path": "public/assets/uploads/image6.jpg",
     "is_video": 0
   },
   {
-    "trick_id": 12,
-    "user_id": 12,
-    "category_id": 3,
     "path": "public/assets/uploads/image7.jpg",
     "is_video": 0
   }

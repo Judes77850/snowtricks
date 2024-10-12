@@ -215,18 +215,13 @@ class TrickController extends AbstractController
 		return $this->redirectToRoute('tricks_index');
 	}
 	#[Route('/comment/{id}/delete', name: 'comment_delete', methods: ['POST'])]
-	public function deleteComment(Request $request, int $id, CommentRepository $commentRepository, EntityManagerInterface $entityManager): Response
+	public function deleteComment(Request $request, Comment $comment, CommentRepository $commentRepository, EntityManagerInterface $entityManager): Response
 	{
-		$comment = $commentRepository->find($id);
-
-		if (!$comment) {
-			throw $this->createNotFoundException('Commentaire non trouvé');
-		}
 
 		$this->denyAccessUnlessGranted('delete', $comment);
 
 		$token = $request->request->get('_token');
-		if (!$this->isCsrfTokenValid('delete' . $id, $token)) {
+		if (!$this->isCsrfTokenValid('delete' . $comment->getId(), $token)) {
 			throw $this->createAccessDeniedException('Token CSRF invalide');
 		}
 
