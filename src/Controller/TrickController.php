@@ -77,9 +77,9 @@ class TrickController extends AbstractController
 	}
 
 	#[Route('/trick/{slug}', name: 'trick_show', methods: ['GET', 'POST'])]
-	public function show(string $slug, Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
+	public function show(string $slug, Request $request, CommentRepository $commentRepository, PaginatorInterface $paginator): Response
 	{
-		$trick = $entityManager->getRepository(Tricks::class)->findOneBy(['slug' => $slug]);
+		$trick = $this->entityManager->getRepository(Tricks::class)->findOneBy(['slug' => $slug]);
 
 		if (!$trick) {
 			throw $this->createNotFoundException('Trick not found');
@@ -94,19 +94,14 @@ class TrickController extends AbstractController
 			$comment->setCreatedAt(new \DateTimeImmutable());
 			$comment->setAuthorId($this->getUser());
 
-			$entityManager->persist($comment);
-			$entityManager->flush();
+			$this->entityManager->persist($comment);
+			$this->entityManager->flush();
 
 			return $this->redirectToRoute('trick_show', ['slug' => $trick->getSlug()]);
 		}
 
-		$queryBuilder = $entityManager->getRepository(Comment::class)->createQueryBuilder('c')
-			->where('c.trickId = :trickId')
-			->setParameter('trickId', $trick->getId())
-			->orderBy('c.createdAt', 'DESC');
-
 		$pagination = $paginator->paginate(
-			$queryBuilder,
+			$commentRepository->findCommentsByTrickId($trick->getId(), 0, 9),
 			$request->query->getInt('page', 1),
 			9
 		);
@@ -124,7 +119,6 @@ class TrickController extends AbstractController
 			'has_more_comments' => $hasMoreComments,
 		]);
 	}
-
 
 
 	#[Route('/tricks', name: 'tricks_index', methods: ['GET'])]
@@ -234,35 +228,18 @@ class TrickController extends AbstractController
 	}
 
 	#[Route('/trick/{id}/comments/load-more', name: 'trick_comments_load_more', methods: ['GET'])]
-	public function loadMoreComments(Request $request, EntityManagerInterface $entityManager, int $id): JsonResponse
+	public function loadMoreComments(Request $request, int $id, CommentRepository $commentRepository): JsonResponse
 	{
 		$offset = $request->query->getInt('offset', 0);
 		$limit = 10;
 
-		$trick = $entityManager->getRepository(Tricks::class)->find($id);
+		$trick = $this->entityManager->getRepository(Tricks::class)->find($id);
 		if (!$trick) {
 			return new JsonResponse(['error' => 'Trick non trouvé'], 404);
 		}
 
-		$comments = $entityManager->getRepository(Comment::class)
-			->createQueryBuilder('c')
-			->where('c.trickId = :trickId')
-			->setParameter('trickId', $trick->getId())
-			->orderBy('c.createdAt', 'DESC')
-			->setFirstResult($offset)
-			->setMaxResults($limit)
-			->getQuery()
-			->getResult();
-
-		$hasMoreComments = $entityManager->getRepository(Comment::class)
-				->createQueryBuilder('c')
-				->where('c.trickId = :trickId')
-				->setParameter('trickId', $trick->getId())
-				->orderBy('c.createdAt', 'DESC')
-				->setFirstResult($offset + $limit)
-				->setMaxResults(1)
-				->getQuery()
-				->getOneOrNullResult() !== null;
+		$comments = $commentRepository->findCommentsByTrickId($trick->getId(), $offset, $limit);
+		$hasMoreComments = $commentRepository->hasMoreComments($trick->getId(), $offset, $limit);
 
 		$html = $this->renderView('trick/comment_card.html.twig', [
 			'comments' => $comments,
@@ -273,5 +250,4 @@ class TrickController extends AbstractController
 			'nextOffset' => $offset + $limit,
 			'hasMoreComments' => $hasMoreComments,
 		]);
-	}
-}
+	}}

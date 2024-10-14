@@ -127,7 +127,7 @@ class GenerateFixtures extends Fixture
 	private function createImage(array $tricks, string $path): Image
 	{
 		$image = new Image();
-		$image->setTrick($tricks[array_rand($tricks)])
+		$image->setTrickId($tricks[array_rand($tricks)])
 			->setPath($path);
 
 		return $image;
@@ -146,7 +146,7 @@ class GenerateFixtures extends Fixture
 		}
 
 		$video = new Video();
-		$video->setTrick($tricks[array_rand($tricks)])
+		$video->setTrickId($tricks[array_rand($tricks)])
 			->setUrl($url)
 			->setVideoId($videoId);
 

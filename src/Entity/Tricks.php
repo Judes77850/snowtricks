@@ -246,4 +246,3 @@ class Tricks
 		return $this;
 	}
 }
-

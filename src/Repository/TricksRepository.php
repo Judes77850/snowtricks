@@ -16,9 +16,10 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class TricksRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, Tricks::class);
-    }
+	public function __construct(ManagerRegistry $registry)
+	{
+		parent::__construct($registry, Tricks::class);
+	}
+
 
 }

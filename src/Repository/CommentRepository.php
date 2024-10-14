@@ -21,4 +21,28 @@ class CommentRepository extends ServiceEntityRepository
         parent::__construct($registry, Comment::class);
     }
 
+	public function findCommentsByTrickId($trickId, $offset = 0, $limit = 10)
+	{
+		return $this->createQueryBuilder('c')
+			->where('c.trickId = :trickId')
+			->setParameter('trickId', $trickId)
+			->orderBy('c.createdAt', 'DESC')
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+			->getQuery()
+			->getResult();
+	}
+
+	public function hasMoreComments($trickId, $offset, $limit)
+	{
+		return $this->createQueryBuilder('c')
+				->where('c.trickId = :trickId')
+				->setParameter('trickId', $trickId)
+				->orderBy('c.createdAt', 'DESC')
+				->setFirstResult($offset + $limit)
+				->setMaxResults(1)
+				->getQuery()
+				->getOneOrNullResult() !== null;
+	}
+
 }
