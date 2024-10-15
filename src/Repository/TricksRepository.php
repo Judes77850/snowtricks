@@ -21,5 +21,28 @@ class TricksRepository extends ServiceEntityRepository
 		parent::__construct($registry, Tricks::class);
 	}
 
+	public function findTricksWithPagination(int $offset, int $limit): array
+	{
+		return $this->createQueryBuilder('t')
+			->orderBy('t.createdAt', 'DESC')
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+			->getQuery()
+			->getResult();
+	}
+
+	/**
+	 * Vérifie s'il reste plus de tricks après un certain offset.
+	 */
+	public function hasMoreTricks(int $offset, int $limit): bool
+	{
+		return $this->createQueryBuilder('t')
+				->orderBy('t.createdAt', 'DESC')
+				->setFirstResult($offset)
+				->setMaxResults(1)
+				->getQuery()
+				->getOneOrNullResult() !== null;
+	}
+
 
 }

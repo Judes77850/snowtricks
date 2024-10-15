@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Tricks;
+use App\Repository\TricksRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -13,26 +14,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
 	#[Route('/', name: 'home', methods: ['GET'])]
-	public function index(Request $request, EntityManagerInterface $entityManager): Response
+	public function index(Request $request, TricksRepository $tricksRepository): Response
 	{
 		$limit = 5;
 		$offset = $request->query->getInt('offset', 0);
 
-		$tricks = $entityManager->getRepository(Tricks::class)
-			->createQueryBuilder('t')
-			->orderBy('t.createdAt', 'DESC')
-			->setFirstResult($offset)
-			->setMaxResults($limit)
-			->getQuery()
-			->getResult();
-
-		$hasMoreTricks = $entityManager->getRepository(Tricks::class)
-				->createQueryBuilder('t')
-				->orderBy('t.createdAt', 'DESC')
-				->setFirstResult($offset + $limit)
-				->setMaxResults(1)
-				->getQuery()
-				->getOneOrNullResult() !== null;
+		$tricks = $tricksRepository->findTricksWithPagination($offset, $limit);
+		$hasMoreTricks = $tricksRepository->hasMoreTricks($offset + $limit, 1);
 
 		return $this->render('index.html.twig', [
 			'tricks' => $tricks,
@@ -42,27 +30,14 @@ class HomeController extends AbstractController
 	}
 
 	#[Route('/tricks/load-more', name: 'tricks_load_more', methods: ['GET'])]
-	public function loadMore(Request $request, EntityManagerInterface $entityManager): JsonResponse
+	public function loadMore(Request $request, TricksRepository $tricksRepository): JsonResponse
 	{
 		try {
 			$offset = $request->query->getInt('offset', 0);
 			$limit = 5;
 
-			$tricks = $entityManager->getRepository(Tricks::class)
-				->createQueryBuilder('t')
-				->orderBy('t.createdAt', 'DESC')
-				->setFirstResult($offset)
-				->setMaxResults($limit)
-				->getQuery()
-				->getResult();
-
-			$hasMoreTricks = $entityManager->getRepository(Tricks::class)
-					->createQueryBuilder('t')
-					->orderBy('t.createdAt', 'DESC')
-					->setFirstResult($offset + $limit)
-					->setMaxResults(1)
-					->getQuery()
-					->getOneOrNullResult() !== null;
+			$tricks = $tricksRepository->findTricksWithPagination($offset, $limit);
+			$hasMoreTricks = $tricksRepository->hasMoreTricks($offset + $limit, 1);
 
 			$html = $this->renderView('trick/trick_card.html.twig', [
 				'tricks' => $tricks,
